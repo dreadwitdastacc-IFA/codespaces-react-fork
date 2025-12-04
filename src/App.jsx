@@ -1,4 +1,24 @@
+
 import './App.css';
+import ProfitLossSummary from './ProfitLossSummary';
+import ExpenseBreakdown from './ExpenseBreakdown';
+import ReportGenerator from './ReportGenerator';
+
+import ExpenseBreakdownChart from './ExpenseBreakdownChart';
+
+import LitecoinMempoolDashboard from './LitecoinMempoolDashboard';
+import LitecoinPriceBot from './LitecoinPriceBot';
+
+import LitecoinMempoolTransactions from './LitecoinMempoolTransactions';
+
+const transactions = [
+  { type: 'income', category: 'sales', amount: 1200 },
+  { type: 'expense', category: 'marketing', amount: 300 },
+  { type: 'expense', category: 'operations', amount: 150 },
+  { type: 'income', category: 'services', amount: 800 },
+  { type: 'expense', category: 'development', amount: 400 },
+];
+
 
 function App() {
   return (
@@ -22,6 +42,15 @@ function App() {
           </a>
         </p>
       </header>
+      <main style={{ padding: '2rem' }}>
+        <LitecoinPriceBot />
+        <LitecoinMempoolDashboard />
+        <LitecoinMempoolTransactions />
+        <ProfitLossSummary transactions={transactions} />
+        <ExpenseBreakdownChart transactions={transactions} />
+        <ExpenseBreakdown transactions={transactions} />
+        <ReportGenerator transactions={transactions} />
+      </main>
     </div>
   );
 }
