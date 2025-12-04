@@ -55,12 +55,19 @@ This section has moved here: [https://github.com/btd/rollup-plugin-visualizer#ro
 
 ### Making a Progressive Web App
 
-This section has moved here: [https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf](https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf)
+This section has moved here: [https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf][definitionLink]
 
-### Advanced Configuration
+## Reloading the Codespace UI
 
-This section has moved here: [https://vitejs.dev/guide/build.html#advanced-base-options](https://vitejs.dev/guide/build.html#advanced-base-options)
+If you need to reload the Codespace UI after making changes:
 
+**Option A: Trigger a UI reload**
+```sh
+echo "Press Ctrl+Shift+P and run 'Developer: Reload Window'"
+```
+
+**Option B: Restart the Codespace server (if available)**
+There is no single universal command for this; use the Codespaces UI controls to restart the server if needed.
 ### Deployment
 
 This section has moved here: [https://vitejs.dev/guide/build.html](https://vitejs.dev/guide/build.html)
@@ -68,3 +75,6 @@ This section has moved here: [https://vitejs.dev/guide/build.html](https://vitej
 ### Troubleshooting
 
 This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](https://vitejs.dev/guide/troubleshooting.html)
+
+
+[definitionLink]: https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf
