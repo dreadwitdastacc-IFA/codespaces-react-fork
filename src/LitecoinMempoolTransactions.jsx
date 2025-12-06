@@ -53,6 +53,7 @@ const LitecoinMempoolTransactions = () => {
 };
 
 export { LitecoinMempoolTransactions };
+export default LitecoinMempoolTransactions;
 
 const API_URL = 'https://mempool.space/api/litecoin/mempool';
 const LitecoinMempoolDashboard = () => {
