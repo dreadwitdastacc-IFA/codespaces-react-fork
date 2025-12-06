@@ -24,9 +24,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
+        <img src="Octocat.png" className="App-logo" alt="Esu ni yii leyin" />
         <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
+          dreadwitdastacc-IFA
         </p>
         <p className="small">
           Edit <code>src/App.jsx</code> and save to reload.
