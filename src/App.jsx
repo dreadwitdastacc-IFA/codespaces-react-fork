@@ -6,10 +6,9 @@ import ReportGenerator from './ReportGenerator';
 
 import ExpenseBreakdownChart from './ExpenseBreakdownChart';
 
-import LitecoinMempoolDashboard from './LitecoinMempoolDashboard';
 import LitecoinPriceBot from './LitecoinPriceBot';
 
-import LitecoinMempoolTransactions from './LitecoinMempoolTransactions';
+import LitecoinMempoolTransactions, { LitecoinMempoolDashboard } from './LitecoinMempoolTransactions';
 
 const transactions = [
   { type: 'income', category: 'sales', amount: 1200 },
@@ -24,12 +23,15 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
+        <img src="Octocat.png" className="App-logo" alt="èṣù miners" />
         <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
+          dreadwitdastacc-IFA
+        </p>
+        <p className="tagline" style={{ fontSize: '1.2rem', margin: '1rem 0', fontWeight: '300' }}>
+          Advanced Cryptocurrency Mining & Farming Platform
         </p>
         <p className="small">
-          Edit <code>src/App.jsx</code> and save to reload.
+          Track Litecoin mempool transactions, monitor mining profitability, and optimize your crypto farming operations with real-time data and powerful analytics.
         </p>
         <p>
           <a
