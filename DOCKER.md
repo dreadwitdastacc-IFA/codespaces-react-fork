@@ -40,16 +40,20 @@ Images are tagged with:
 
 ### Pull an Image
 
+Replace `<owner>/<repo>` with your GitHub username and repository name:
+
 ```bash
 # Pull the latest image
-docker pull ghcr.io/dreadwitdastacc-ifa/codespaces-react:latest
+docker pull ghcr.io/<owner>/<repo>:latest
 
 # Pull a specific version
-docker pull ghcr.io/dreadwitdastacc-ifa/codespaces-react:v1.0.0
+docker pull ghcr.io/<owner>/<repo>:v1.0.0
 
 # Run the pulled image
-docker run -p 8080:80 ghcr.io/dreadwitdastacc-ifa/codespaces-react:latest
+docker run -p 8080:80 ghcr.io/<owner>/<repo>:latest
 ```
+
+For this repository: `ghcr.io/dreadwitdastacc-ifa/codespaces-react`
 
 ## Multi-Platform Support
 

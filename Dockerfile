@@ -27,9 +27,9 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Expose port 80
 EXPOSE 80
 
-# Health check
+# Health check - uses built-in sh commands since wget/curl not available in alpine
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
+  CMD test -f /var/run/nginx.pid || exit 1
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
