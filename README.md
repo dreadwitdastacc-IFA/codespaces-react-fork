@@ -1,4 +1,5 @@
-# GitHub Codespaces ♥️ React
+# GitHub Codespaces 👍<img width="1024" height="1024" alt="A modern codespace l" src="https://github.com/user-attachments/assets/aaf2497b-f5d9-4564-b7ae-3dd8520c1be5" />
+React
 
 Welcome to your shiny new Codespace running React! We've got everything fired up and running for you to explore React.
 
