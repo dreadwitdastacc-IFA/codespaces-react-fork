@@ -1,4 +1,14 @@
+/**
+ * @file App.jsx
+ * @description Main application component. Renders the dashboard header and all main widgets.
+ */
 
+
+
+/**
+ * @file App.jsx
+ * @description Main application component. Renders the dashboard header and all main widgets.
+ */import React from 'react';
 import './App.css';
 import ProfitLossSummary from './ProfitLossSummary';
 import ExpenseBreakdown from './ExpenseBreakdown';

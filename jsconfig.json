@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node"
-  }
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": ["src"]
 }
+EOF
