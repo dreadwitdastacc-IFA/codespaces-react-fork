@@ -90,3 +90,6 @@ If you need support for this project, contact:
 You can also see `SUPPORT.md` for full contact details.
 
 [definitionLink]: https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf
+echo "See project contributors" > CONTRIBUTORS.txt
+git add CONTRIBUTORS.txt && git commit -m "chore: add CONTRIBUTORS.txt"
+git push fork Dreadwitdastacc-Ifawole

@@ -1,0 +1,25 @@
+From b99e54f8c6d85909022c2fc75c4097df41588a9e Mon Sep 17 00:00:00 2001
+From: Codespace Bot <devnull@example.com>
+Date: Sun, 21 Dec 2025 20:27:58 +0000
+Subject: [PATCH] chore: update LICENSE to MIT (Andrey Petrov 2008-2020)
+
+---
+ LICENSE | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/LICENSE b/LICENSE
+index fac6e63..f3bdcf9 100644
+--- a/LICENSE
++++ b/LICENSE
+@@ -1,6 +1,7 @@
++
+ MIT License
+ 
+-Copyright (c) 2022 GitHub
++Copyright (c) 2008-2020 Andrey Petrov and contributors (see CONTRIBUTORS.txt)
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+-- 
+2.49.0
+

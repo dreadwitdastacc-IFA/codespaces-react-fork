@@ -6,5 +6,8 @@
   ],
   "inlineChat.enableV2": true,
   "inlineChat.finishOnType": true,
-  "inlineChat.lineEmptyHint": true
+  "inlineChat.lineEmptyHint": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "ms-vscode.remote-repositories",
+  "editor.wordWrap": "wordWrapColumn"
 }
