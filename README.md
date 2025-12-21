@@ -77,5 +77,16 @@ This section has moved here: [https://vitejs.dev/guide/build.html](https://vitej
 
 This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](https://vitejs.dev/guide/troubleshooting.html)
 
+## Support
+
+If you need support for this project, contact:
+
+- Support email: dreadwitdastacc@gmail.com
+- Website: http://gogominmine.com
+
+- Maintainer: Devon Miller
+- Maintainer: Ogun (obaluaye)
+
+You can also see `SUPPORT.md` for full contact details.
 
 [definitionLink]: https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf
