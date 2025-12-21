@@ -78,3 +78,23 @@ This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](htt
 
 
 [definitionLink]: https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf
+
+## Docker
+
+A simple Dockerfile has been added to this repository. It builds a small production image using Node 18 Alpine.
+
+Build locally:
+
+```bash
+docker build -t codespaces-react:latest .
+```
+
+Run locally (image expects a `server.js` entrypoint):
+
+```bash
+docker run -p 3000:3000 --rm codespaces-react:latest
+```
+
+CI: A GitHub Actions workflow `.github/workflows/docker-image.yml` is included that will build the image on pull requests and will push the image to GitHub Container Registry (GHCR) when changes are merged to `main`. The workflow uses the repository's `GITHUB_TOKEN` for authentication; ensure the repository has `packages: write` permissions enabled if you want automatic publishing.
+
+Publishing to another registry (Docker Hub) can be added by setting registry credentials as repository secrets and updating the workflow to log in with those secrets.
