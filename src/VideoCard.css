@@ -35,8 +35,10 @@
   position: relative;
   box-shadow: inset 0 0 40px rgba(0,0,0,0.25);
   transform-origin: center;
-  transition: transform 300ms, filter 300ms;
-}
+  /* shorthand: name duration timing-function iteration-count */
+  animation: pulse 1800ms cubic-bezier(.2,.9,.2,1) infinite;
+  /* ensure this animation replaces properties (so play icon pulse doesn't stack transforms) */
+  animation-composition: replace;
 
 .video-card:hover .video-card__thumb {
   transform: scale(1.06) rotate(-0.6deg);
@@ -131,24 +133,3 @@
   justify-content: center;
 }
 
-.vc-like-button:focus {
-  outline: 2px solid rgba(99,102,241,0.9);
-  outline-offset: 3px;
-}
-
-.vc-like-button:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 18px rgba(2,6,23,0.6); }
-
-.vc-like-button.liked { animation: like-pop 420ms cubic-bezier(.2,.9,.2,1); box-shadow: 0 10px 30px rgba(139,92,246,0.18); }
-
-.vc-like-icon { display: inline-block; transform-origin: center; }
-
-@keyframes like-pop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.18) rotate(-8deg); }
-  70% { transform: scale(0.98) rotate(4deg); }
-  100% { transform: scale(1); }
-}
-
-# Replace <TOKEN> with a personal access token that has repo scope (avoid pasting token publicly)
-git remote set-url origin https://<TOKEN>@github.com/dreadwitdastacc-IFA/codespaces-react-fork.git
-git push --set-upstream origin Dreadwitdastacc-Ifawole
