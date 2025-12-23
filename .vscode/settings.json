@@ -9,5 +9,10 @@
   "inlineChat.lineEmptyHint": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "ms-vscode.remote-repositories",
-  "editor.wordWrap": "wordWrapColumn"
+  "editor.wordWrap": "wordWrapColumn",
+  "workbench.editor.limit.enabled": false,
+  "workbench.editor.limit.value": 0,
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

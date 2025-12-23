@@ -1,4 +1,4 @@
-
+import React from 'react';
 import './App.css';
 import ProfitLossSummary from './ProfitLossSummary';
 import ExpenseBreakdown from './ExpenseBreakdown';
@@ -8,7 +8,8 @@ import ExpenseBreakdownChart from './ExpenseBreakdownChart';
 
 import LitecoinPriceBot from './LitecoinPriceBot';
 
-import LitecoinMempoolTransactions, { LitecoinMempoolDashboard } from './LitecoinMempoolTransactions';
+import LitecoinMempoolTransactions from './LitecoinMempoolTransactions';
+import LitecoinMempoolDashboard from './LitecoinMempoolDashboard';
 
 const transactions = [
   { type: 'income', category: 'sales', amount: 1200 },
@@ -23,13 +24,17 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="èṣù miners" />
+        <img src="/logo192.png" className="App-logo" alt="dreadwitdastacc-IFA logo" />
         <p>
           dreadwitdastacc-IFA
         </p>
         <p className="tagline" style={{ fontSize: '1.2rem', margin: '1rem 0', fontWeight: '300' }}>
           Advanced Cryptocurrency Mining & Farming Platform
         </p>
+        <div style={{ marginTop: '0.5rem' }}>
+          <a href="/" style={{ marginRight: '1rem' }}>Web App</a>
+          <a href="/manifest.json" target="_blank" rel="noopener noreferrer">Mobile / PWA</a>
+        </div>
         <p className="small">
           Track Litecoin mempool transactions, monitor mining profitability, and optimize your crypto farming operations with real-time data and powerful analytics.
         </p>
