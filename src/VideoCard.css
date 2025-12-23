@@ -123,13 +123,11 @@
   border: 1px solid rgba(255,255,255,0.06);
   color: #fff;
   cursor: pointer;
-  align-self: center;
-  font-size: 20px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
+export GIT_TOKEN=<your_token>
+git remote set-url origin https://$GIT_TOKEN@github.com/dreadwitdastacc-IFA/codespaces-react-fork.git
+git push --set-upstream origin Dreadwitdastacc-Ifawole
+gh pr create --base Dreadwitdastacc-Ifawole --head Dreadwitdastacc-Ifawole \
+  --title "Enhance VideoCard + image-service + docker-compose" \
+  --body "Adds VideoCard, tests, Storybook, secure-transfer templates, and an adaptive image-service with docker-compose."
