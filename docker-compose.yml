@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    image: codespaces-react-web:latest
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - image-service
+
+  image-service:
+    build: ./docker/image-service
+    image: codespaces-react-image-service:latest
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+# Note: this compose file runs the frontend (nginx) on host port 3000
+# and the image-processing service on 5000. Adjust ports as needed.
