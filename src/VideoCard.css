@@ -148,3 +148,7 @@
   70% { transform: scale(0.98) rotate(4deg); }
   100% { transform: scale(1); }
 }
+
+# Replace <TOKEN> with a personal access token that has repo scope (avoid pasting token publicly)
+git remote set-url origin https://<TOKEN>@github.com/dreadwitdastacc-IFA/codespaces-react-fork.git
+git push --set-upstream origin Dreadwitdastacc-Ifawole
