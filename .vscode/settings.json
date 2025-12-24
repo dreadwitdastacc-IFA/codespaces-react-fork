@@ -23,5 +23,6 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  },
+  "remote.autoForwardPortsFallback": 0
 }

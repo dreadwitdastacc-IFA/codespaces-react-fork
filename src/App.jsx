@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./App.css";
 import ProfitLossSummary from "./ProfitLossSummary";
 import ExpenseBreakdown from "./ExpenseBreakdown";
@@ -12,15 +13,11 @@ import LitecoinMempoolTransactions from "./LitecoinMempoolTransactions";
 import LitecoinMempoolDashboard from "./LitecoinMempoolDashboard";
 import VideoCard from "./VideoCard";
 
-const transactions = [
-  { type: "income", category: "sales", amount: 1200 },
-  { type: "expense", category: "marketing", amount: 300 },
-  { type: "expense", category: "operations", amount: 150 },
-  { type: "income", category: "services", amount: 800 },
-  { type: "expense", category: "development", amount: 400 },
-];
+import defaultTransactions from "./data/transactions";
 
-function App() {
+function App({ initialTransactions = defaultTransactions }) {
+  const transactions = initialTransactions;
+
   return (
     <div className="App">
       <header className="App-header" role="banner">
@@ -83,6 +80,20 @@ function App() {
           >
             Featured
           </h2>
+          <div style={{ marginBottom: "2rem" }}>
+            <h3>Mini Short Live Performance Video</h3>
+            <video
+              controls
+              width="100%"
+              height="auto"
+              style={{ maxWidth: "600px" }}
+              aria-label="Short live performance video"
+            >
+              <source src="/media/performance.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <p>AUTHORITIES: This video demonstrates live mining performance.</p>
+          </div>
           <VideoCard
             video={{
               title: "Mining Performance Overview",
@@ -106,5 +117,15 @@ function App() {
     </div>
   );
 }
+
+App.propTypes = {
+  initialTransactions: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      category: PropTypes.string,
+      amount: PropTypes.number,
+    })
+  ),
+};
 
 export default App;
