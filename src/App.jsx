@@ -114,6 +114,21 @@ function App({ initialTransactions = defaultTransactions }) {
         <ExpenseBreakdown transactions={transactions} />
         <ReportGenerator transactions={transactions} />
       </main>
+      <footer
+        style={{
+          padding: "2rem",
+          textAlign: "center",
+          backgroundColor: "#f0f0f0",
+          marginTop: "2rem",
+        }}
+      >
+        <p>POWERED BY SOTA LLMs</p>
+        <p>
+          I leverage GPT-5 and Claude-4 advanced agentic coding capabilities to
+          help you build, debug, and innovate faster.
+        </p>
+        <p>Edit Files | Commands | Browse | Explore | MCP Tools | Secure</p>
+      </footer>
     </div>
   );
 }
