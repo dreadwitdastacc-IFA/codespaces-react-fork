@@ -2,6 +2,7 @@
   "name": "codespaces-react",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "homepage": "https://mywebsite.com",
   "type": "module",
   "dependencies": {
