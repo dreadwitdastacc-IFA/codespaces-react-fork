@@ -17,4 +17,4 @@ export async function fetchOpenAIChat(messages, model = "gpt-4") {
   return response.json();
 }
 
-export { fetchOpenAIChat, PersmixOpenAIChat, EliteTerminal, SystemStatus };
+export { PersmixOpenAIChat, EliteTerminal, SystemStatus };

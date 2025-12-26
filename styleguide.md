@@ -9,8 +9,13 @@ This document outlines the coding standards and best practices for the codespace
 - [File Structure](#file-structure)
 - [Naming Conventions](#naming-conventions)
 - [Component Guidelines](#component-guidelines)
+- [Styling](#styling)
 - [Testing](#testing)
+- [Configurations](#configurations)
 - [Git Workflow](#git-workflow)
+- [Code Quality](#code-quality)
+- [Performance](#performance)
+- [Security](#security)
 
 ## General Principles
 
@@ -60,6 +65,43 @@ src/
 - Use custom hooks for shared logic
 - Handle loading and error states appropriately
 
+## Styling
+
+### CSS Methodology
+
+- Use CSS modules for component-scoped styles
+- Follow BEM (Block Element Modifier) naming convention
+- Prefer utility-first approach with Tailwind CSS for rapid development
+- Maintain design system consistency with CSS custom properties
+
+### Modern CSS Features
+
+- Use CSS Grid and Flexbox for layouts
+- Implement CSS custom properties (variables) for theming
+- Leverage CSS-in-JS libraries like styled-components for dynamic styling
+- Utilize modern selectors and pseudo-classes
+
+### Responsive Design
+
+- Mobile-first approach with media queries
+- Use relative units (rem, em, %) over fixed pixels
+- Implement fluid typography with clamp() function
+- Test across multiple devices and screen sizes
+
+### Performance
+
+- Minimize CSS bundle size with purging unused styles
+- Use CSS containment for better rendering performance
+- Optimize images and fonts for web
+- Implement critical CSS for above-the-fold content
+
+### Accessibility
+
+- Ensure sufficient color contrast ratios
+- Use semantic HTML with appropriate ARIA attributes
+- Support keyboard navigation and focus management
+- Test with screen readers and accessibility tools
+
 ## Testing
 
 - Write tests for all components and utilities
@@ -67,6 +109,37 @@ src/
 - Test both success and error scenarios
 - Aim for good test coverage (>80%)
 - Use React Testing Library for component tests
+
+## Configurations
+
+### Vite Configuration
+
+- Use `vite.config.js` for build and development settings
+- Configure aliases for clean imports: `@/components`, `@/utils`
+- Set up environment variables with `VITE_` prefix for client-side access
+- Enable source maps in development, disable in production
+
+### ESLint Configuration
+
+- Extend from `react-app` and `react-app/jest`
+- Add custom rules for React hooks and prop validation
+- Configure import sorting and unused variable detection
+- Use `.eslintrc.json` for project-wide settings
+
+### Environment Variables
+
+- Store sensitive data in `.env` files (not committed to git)
+- Use `process.env` for server-side, `import.meta.env` for client-side
+- Document required environment variables in README
+- Provide `.env.example` for team setup
+
+### Package.json Scripts
+
+- `start`: Development server
+- `build`: Production build
+- `test`: Run test suite
+- `lint`: Code linting
+- `format`: Code formatting with Prettier
 
 ## Git Workflow
 
