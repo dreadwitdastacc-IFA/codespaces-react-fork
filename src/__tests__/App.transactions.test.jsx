@@ -5,11 +5,11 @@ import App from "../App";
 describe("App integration", () => {
   test("renders header and featured video", () => {
     render(<App />);
-    const brand = screen.getByText(/dreadwitdastacc-IFA/i);
+    const brands = screen.getAllByText(/dreadwitdastacc-IFA/i);
     const featured = screen.getByRole("heading", { name: /featured/i });
-    const videoTitle = screen.getByText(/Mining Performance Overview/i);
+    const videoTitle = screen.getByText(/Mini Short Live Performance Video/i);
 
-    expect(brand).toBeDefined();
+    expect(brands).toHaveLength(2);
     expect(featured).toBeDefined();
     expect(videoTitle).toBeDefined();
   });

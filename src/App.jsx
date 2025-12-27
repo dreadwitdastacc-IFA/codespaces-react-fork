@@ -19,12 +19,10 @@ import Persmix, {
   EliteTerminal,
   SystemStatus,
 } from "./Persmix";
+import cosmosService from "./services/cosmosService";
 
 function App({ initialTransactions = defaultTransactions }) {
-  const [transactions, setTransactions] = useState(() => {
-    const saved = localStorage.getItem("transactions");
-    return saved ? JSON.parse(saved) : initialTransactions;
-  });
+  const [transactions, setTransactions] = useState(initialTransactions);
   const [walletType, setWalletType] = useState("litecoin");
   const [walletAddress, setWalletAddress] = useState("");
   const [etherscanKey, setEtherscanKey] = useState("");
@@ -33,8 +31,51 @@ function App({ initialTransactions = defaultTransactions }) {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [cloudError, setCloudError] = useState(null);
 
-  // Local storage persistence
+  // Initialize Cosmos DB and load transactions
   useEffect(() => {
+    const loadTransactions = async () => {
+      try {
+        await cosmosService.init();
+        const cosmosTransactions = await cosmosService.getTransactions();
+        if (cosmosTransactions.length > 0) {
+          setTransactions(cosmosTransactions);
+        }
+      } catch (error) {
+        console.error('Failed to load from Cosmos DB:', error);
+        // Fallback to localStorage
+        const saved = localStorage.getItem("transactions");
+        if (saved) {
+          setTransactions(JSON.parse(saved));
+        }
+      }
+    };
+    loadTransactions();
+  }, []);
+
+  // Sync to Cosmos DB and localStorage
+  useEffect(() => {
+    const syncTransactions = async () => {
+      try {
+        setSyncStatus("syncing");
+        // For simplicity, replace all; in real app, diff
+        // But since small, delete all and add new
+        const existing = await cosmosService.getTransactions();
+        for (const tx of existing) {
+          await cosmosService.deleteTransaction(tx.id, tx.type);
+        }
+        for (const tx of transactions) {
+          await cosmosService.addTransaction(tx);
+        }
+        setSyncStatus("synced");
+        setCloudError(null);
+      } catch (error) {
+        setSyncStatus("error");
+        setCloudError(error.message);
+      }
+    };
+    if (transactions !== initialTransactions) {
+      syncTransactions();
+    }
     localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
 

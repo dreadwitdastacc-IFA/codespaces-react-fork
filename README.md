@@ -1,5 +1,33 @@
 # Elite Codespaces React App
 
+## Cosmos DB Emulator (local development)
+
+You can run the Azure Cosmos DB emulator locally (recommended for development and testing).
+
+Requirements:
+- Docker
+
+Start emulator:
+
+```bash
+npm run emulator:run
+```
+
+Stop emulator:
+
+```bash
+npm run emulator:stop
+```
+
+Use `.env.example` as a template for your environment variables and copy it to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+The emulator listens on `https://localhost:8081/` and the example `.env` contains the emulator key.
+
+
 A state-of-the-art, top-of-the-line React application featuring advanced AI integration with GPT-4o and Claude-4 agentic coding capabilities, elite terminal emulation, self-aware system monitoring, real-time cryptocurrency tracking, task management, portfolio tracking, and Kubernetes-ready deployment.
 
 ## 🚀 Features

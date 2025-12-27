@@ -2,7 +2,6 @@
   "name": "codespaces-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gogetumminmine.com",
   "license": "MIT",
   "homepage": "https://mywebsite.com",
   "type": "module",
@@ -46,7 +45,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node openai.js",
-    "test": "vitest --environment jsdom"
+    "test": "vitest --environment jsdom",
+    "emulator:run": "docker run -p 8081:8081 -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=1 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator",
+    "emulator:stop": "docker rm -f $(docker ps -q --filter ancestor=mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator) || true"
   },
   "eslintConfig": {
     "extends": [

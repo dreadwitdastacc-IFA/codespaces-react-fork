@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchOpenAIChat } from "./index";
+import cosmosService from "../services/cosmosService";
 
 export default function PersmixOpenAIChat() {
   const [input, setInput] = useState("");
@@ -9,6 +10,35 @@ export default function PersmixOpenAIChat() {
   const [model, setModel] = useState("gpt-4o");
   const [enableTools, setEnableTools] = useState(true);
   const [iterations, setIterations] = useState(0);
+  const userId = "default"; // For demo, single user
+
+  // Load chat history on mount
+  useEffect(() => {
+    const loadHistory = async () => {
+      try {
+        const history = await cosmosService.getChatHistory(userId);
+        setMessages(history.map(msg => ({ role: msg.role, content: msg.content })));
+      } catch (err) {
+        console.error('Failed to load chat history:', err);
+      }
+    };
+    loadHistory();
+  }, []);
+
+  // Save message to Cosmos
+  const saveMessage = async (message) => {
+    try {
+      await cosmosService.addChatMessage({
+        id: Date.now().toString(),
+        userId,
+        role: message.role,
+        content: message.content,
+        timestamp: new Date().toISOString()
+      });
+    } catch (err) {
+      console.error('Failed to save message:', err);
+    }
+  };
 
   async function handleSend(e) {
     e.preventDefault();
@@ -18,12 +48,14 @@ export default function PersmixOpenAIChat() {
     const userMsg = { role: "user", content: input };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
+    await saveMessage(userMsg);
     setInput("");
     try {
       const res = await fetchOpenAIChat(newMessages, model, "default", enableTools);
       const aiMsg = res.choices?.[0]?.message;
       if (aiMsg) {
         setMessages([...newMessages, aiMsg]);
+        await saveMessage(aiMsg);
         // Show if tools were used
         if (aiMsg.tool_calls) {
           setIterations(aiMsg.tool_calls.length);
