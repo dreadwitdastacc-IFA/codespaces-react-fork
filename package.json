@@ -5,6 +5,18 @@
   "homepage": "https://mywebsite.com",
   "type": "module",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
+    "@azure-rest/ai-inference": "^1.0.0-beta.6",
+    "@azure/core-auth": "^1.10.1",
+    "@azure/cosmos": "^4.9.0",
+    "@microsoft/signalr": "^10.0.0",
+    "@storybook/addon-essentials": "^8.4.0",
+    "@storybook/addon-interactions": "^8.4.0",
+    "@storybook/addon-links": "^8.4.0",
+    "@storybook/blocks": "^8.4.0",
+    "@storybook/react": "^8.4.0",
+    "@storybook/react-vite": "^8.4.0",
+    "@storybook/test": "^8.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -17,6 +29,9 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^18.2.0",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+    "storybook": "^8.4.0",
     "web-vitals": "^3.1.0"
   },
   "overrides": {

@@ -1,11 +1,18 @@
 # Elite Codespaces React App
 
-A state-of-the-art, top-of-the-line React application featuring advanced AI integration, elite terminal emulation, self-aware system monitoring, and Kubernetes-ready deployment.
+A state-of-the-art, top-of-the-line React application featuring advanced AI integration with GPT-4o and Claude-4 agentic coding capabilities, elite terminal emulation, self-aware system monitoring, real-time cryptocurrency tracking, task management, portfolio tracking, and Kubernetes-ready deployment.
 
 ## 🚀 Features
 
+- **Advanced Agentic AI Capabilities**: 
+  - 🤖 Multi-step reasoning with GPT-4o, Claude-3.5-Sonnet, and O1 models
+  - 🔧 Function calling and tool execution
+  - 📊 Code execution for data analysis (JavaScript/Python)
+  - 🔄 Iterative problem-solving with up to 5 reasoning steps
+  - 💡 Real-time cryptocurrency data fetching and portfolio analysis
+
 - **Persmix Elite Module**: Cutting-edge modular UI components with ultra-fast rendering and seamless integration.
-- **OpenAI Chat Integration**: Adaptive AI conversation powered by GPT-4 with real-time messaging.
+- **Azure AI Integration**: Advanced AI conversation powered by GitHub Models and Azure AI Foundry with cryptocurrency analysis and trading assistance.
 - **Elite Terminal**: Secure backend-executed command-line interface with history and auto-completion.
 - **System Status Monitor**: Self-aware component displaying real-time system metrics (uptime, memory, platform).
 - **Cryptocurrency Dashboard**: Multi-chain wallet integration for Litecoin, Bitcoin, Ethereum, and more.
@@ -59,17 +66,45 @@ codespaces-react/
 
 1. **Clone and Install:**
 
+   ```bash (see `.env.example` for reference):
+
    ```bash
-   git clone <repository-url>
-   cd codespaces-react
-   npm install
+   # Azure AI Configuration (GitHub Models - Free Tier)
+   AZURE_ENDPOINT=https://models.inference.ai.azure.com
+   AZURE_API_KEY=your_github_token_here
+   AZURE_MODEL=gpt-4o
+   
+   # Advanced Agentic Features
+   ENABLE_FUNCTION_CALLING=true
+   MAX_ITERATIONS=5
+   
+   # Azure Cosmos DB (optional, defaults to local emulator)
+   COSMOS_ENDPOINT=https://localhost:8081
+   COSMOS_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
+   
+   # Server Configuration
+   PORT=3002
    ```
 
-2. **Environment Setup:**
-   Create `.env` file:
+   **Getting Started with GitHub Models:**
+   - Visit https://github.com/marketplace/models
+   - Create a GitHub Personal Access Token (classic) with `read:packages` scope
+   - Use the token as `AZURE_API_KEY`
+   - Free tier includes: GPT-4o, GPT-4o-mini, Claude-3.5-Sonnet, O1-preview, and more!
 
-   ```
-   OPENAI_API_KEY=your-openai-api-key-here
+   **Supported Models:**
+   - `gpt-4o` - Advanced reasoning and coding (recommended)
+   - `gpt-4o-mini` - Fast and efficient
+   - `claude-3.5-sonnet` - Anthropic's latest model
+   - `o1-preview` - Advanced multi-step reasoning
+   - `o1-mini` - Efficient reasoning model
+
+   **Advanced Agentic Features:**
+   - Multi-step reasoning for complex tasks
+   - Function calling for cryptocurrency data and portfolio analysis
+   - Code execution capabilities (JavaScript)
+   - Automatic tool selection and chaining
+   COSMOS_KEY=your-cosmos-key-here
    ```
 
 3. **Run Locally:**
