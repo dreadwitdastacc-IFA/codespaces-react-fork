@@ -9,6 +9,11 @@ on:
     - cron: '30 5 * * 1,3'
     - cron: '30 5,17 * * 2,4'
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Build"]
+    types: [requested]
+    branches:
+      - 'releases/**'
   workflow_call:
     outputs:
       workflow_output1:

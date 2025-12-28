@@ -46,6 +46,8 @@
     "preview": "vite preview",
     "server": "node openai.js",
     "test": "vitest --environment jsdom",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "emulator:run": "docker run -p 8081:8081 -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=1 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator",
     "emulator:stop": "docker rm -f $(docker ps -q --filter ancestor=mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator) || true"
   },
@@ -72,5 +74,11 @@
     "jsdom": "^26.1.0",
     "vite": "^6.3.6",
     "vitest": "^3.0.7"
+  }
+
+  ,"vitest": {
+    "test": {
+      "setupFiles": ["./src/setupTests.js"]
+    }
   }
 }

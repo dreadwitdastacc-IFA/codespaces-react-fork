@@ -1,0 +1,27 @@
+name: Authenticated Checkout Example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  authenticated-checkout:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout using built-in token
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout using PAT (optional)
+        if: secrets.PAT_TOKEN != ''
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Show repo status
+        run: |
+          echo "Remote:" && git remote -v
+          echo
+          echo "User config:" && git config --get user.name || true

@@ -1,4 +1,21 @@
 {
+  "name": "Codespaces React Devcontainer",
+  "image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0-18",
+  "features": {},
+  "forwardPorts": [3000, 6006],
+  "postCreateCommand": "./scripts/setup-git-auth.sh || true && npm install",
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.vscode-pull-request-github",
+        "GitHub.vscode-github-actions",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}
+{
   "image": "mcr.microsoft.com/devcontainers/universal:2",
   "hostRequirements": {
     "cpus": 4

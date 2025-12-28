@@ -1,0 +1,181 @@
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import EliteTerminal from './EliteTerminal';
+
+// Mock CSS import
+vi.mock('./Persmix.css', () => ({}));
+
+describe('EliteTerminal', () => {
+  const mockOnCommand = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('renders correctly with header and input', () => {
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    expect(screen.getByText('Elite Terminal - Auto-Complete Enabled')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)')).toBeInTheDocument();
+    expect(screen.queryByRole('list')).not.toBeInTheDocument(); // No suggestions initially
+  });
+
+  it('updates input and shows suggestions on typing', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'ls');
+    expect(input).toHaveValue('ls');
+    expect(screen.getByText('ls')).toBeInTheDocument(); // Suggestion appears
+  });
+
+  it('executes command on Enter and updates history', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'pwd{enter}');
+    expect(mockOnCommand).toHaveBeenCalledWith('pwd');
+    expect(screen.getByText('$ pwd')).toBeInTheDocument(); // History shows command
+    expect(input).toHaveValue(''); // Input cleared
+  });
+
+  it('navigates history with Arrow Up', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'ls{enter}');
+    await user.type(input, 'cd{enter}');
+    await user.keyboard('{ArrowUp}');
+    expect(input).toHaveValue('cd'); // Last command
+    await user.keyboard('{ArrowUp}');
+    expect(input).toHaveValue('ls'); // Previous command
+  });
+
+  it('navigates history with Arrow Down and clears at end', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'ls{enter}');
+    await user.keyboard('{ArrowUp}');
+    expect(input).toHaveValue('ls');
+    await user.keyboard('{ArrowDown}');
+    expect(input).toHaveValue(''); // Cleared
+  });
+
+  it('cycles suggestions with Tab', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'l');
+    await user.keyboard('{Tab}');
+    expect(input).toHaveValue('ls'); // First suggestion
+    await user.keyboard('{Tab}');
+    expect(input).toHaveValue('ls'); // Cycles back if only one, or next
+  });
+
+  it('clears suggestions on Escape', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'l');
+    expect(screen.getByText('ls')).toBeInTheDocument();
+    await user.keyboard('{Escape}');
+    expect(screen.queryByText('ls')).not.toBeInTheDocument();
+  });
+
+  it('selects suggestion on click', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'l');
+    const suggestion = screen.getByText('ls');
+    await user.click(suggestion);
+    expect(input).toHaveValue('ls');
+    expect(screen.queryByRole('list')).not.toBeInTheDocument(); // Suggestions cleared
+  });
+  const mockOnCommand = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('renders correctly with header and input', () => {
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    expect(screen.getByText('Elite Terminal - Auto-Complete Enabled')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)')).toBeInTheDocument();
+    expect(screen.queryByRole('list')).not.toBeInTheDocument(); // No suggestions initially
+  });
+
+  it('updates input and shows suggestions on typing', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'ls');
+    expect(input).toHaveValue('ls');
+    expect(screen.getByText('ls')).toBeInTheDocument(); // Suggestion appears
+  });
+
+  it('executes command on Enter and updates history', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'pwd{enter}');
+    expect(mockOnCommand).toHaveBeenCalledWith('pwd');
+    expect(screen.getByText('$ pwd')).toBeInTheDocument(); // History shows command
+    expect(input).toHaveValue(''); // Input cleared
+  });
+
+  it('navigates history with Arrow Up', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'ls{enter}');
+    await user.type(input, 'cd{enter}');
+    await user.keyboard('{ArrowUp}');
+    expect(input).toHaveValue('cd'); // Last command
+    await user.keyboard('{ArrowUp}');
+    expect(input).toHaveValue('ls'); // Previous command
+  });
+
+  it('navigates history with Arrow Down and clears at end', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'ls{enter}');
+    await user.keyboard('{ArrowUp}');
+    expect(input).toHaveValue('ls');
+    await user.keyboard('{ArrowDown}');
+    expect(input).toHaveValue(''); // Cleared
+  });
+
+  it('cycles suggestions with Tab', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'l');
+    await user.keyboard('{Tab}');
+    expect(input).toHaveValue('ls'); // First suggestion
+    await user.keyboard('{Tab}');
+    expect(input).toHaveValue('ls'); // Cycles back if only one, or next
+  });
+
+  it('clears suggestions on Escape', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'l');
+    expect(screen.getByText('ls')).toBeInTheDocument();
+    await user.keyboard('{Escape}');
+    expect(screen.queryByText('ls')).not.toBeInTheDocument();
+  });
+
+  it('selects suggestion on click', async () => {
+    const user = userEvent.setup();
+    render(<EliteTerminal onCommand={mockOnCommand} />);
+    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    await user.type(input, 'l');
+    const suggestion = screen.getByText('ls');
+    await user.click(suggestion);
+    expect(input).toHaveValue('ls');
+    expect(screen.queryByRole('list')).not.toBeInTheDocument(); // Suggestions cleared
+  });

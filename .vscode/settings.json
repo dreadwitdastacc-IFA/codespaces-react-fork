@@ -1,4 +1,11 @@
 {
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.allowForcePush": false,
+  "github.gitAuthentication": true
+}
+{
   "github.copilot.chat.codeGeneration.instructions": [
     {
       "file": ".copilot-codeGeneration-instructions.md"
