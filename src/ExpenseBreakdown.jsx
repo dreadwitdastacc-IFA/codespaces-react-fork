@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function getExpenseBreakdown(transactions) {
   const breakdown = {};
@@ -22,6 +23,10 @@ const ExpenseBreakdown = ({ transactions }) => {
       </ul>
     </div>
   );
+};
+
+ExpenseBreakdown.propTypes = {
+  transactions: PropTypes.array.isRequired,
 };
 
 export default ExpenseBreakdown;

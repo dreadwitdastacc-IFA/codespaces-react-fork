@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function calculateNetProfit(transactions) {
   return transactions.reduce((acc, t) => {
@@ -14,6 +15,10 @@ const ProfitLossSummary = ({ transactions }) => {
       <p>{net >= 0 ? 'Profit' : 'Loss'}: ${Math.abs(net)}</p>
     </div>
   );
+};
+
+ProfitLossSummary.propTypes = {
+  transactions: PropTypes.array.isRequired,
 };
 
 export default ProfitLossSummary;

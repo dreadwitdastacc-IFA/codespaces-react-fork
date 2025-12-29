@@ -16,10 +16,15 @@ export default function PersmixOpenAIChat() {
   useEffect(() => {
     const loadHistory = async () => {
       try {
+        console.log('Loading chat history for user:', userId);
         const history = await cosmosService.getChatHistory(userId);
-        setMessages(history.map(msg => ({ role: msg.role, content: msg.content })));
+        if (history && history.length > 0) {
+          setMessages(history.map(msg => ({ role: msg.role, content: msg.content })));
+          console.log(`Loaded ${history.length} messages from chat history`);
+        }
       } catch (err) {
         console.error('Failed to load chat history:', err);
+        setError(`Failed to load chat history: ${err.message}`);
       }
     };
     loadHistory();
@@ -29,14 +34,16 @@ export default function PersmixOpenAIChat() {
   const saveMessage = async (message) => {
     try {
       await cosmosService.addChatMessage({
-        id: Date.now().toString(),
+        id: `${userId}-${Date.now()}`,
         userId,
         role: message.role,
         content: message.content,
         timestamp: new Date().toISOString()
       });
+      console.log('Message saved successfully');
     } catch (err) {
       console.error('Failed to save message:', err);
+      // Don't throw - message saving should not block chat flow
     }
   };
 

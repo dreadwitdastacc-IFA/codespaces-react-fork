@@ -1,0 +1,5 @@
+requests
+python-dotenv
+rich
+# Optional (Agent Framework preview):
+# agent-framework-azure-ai --pre

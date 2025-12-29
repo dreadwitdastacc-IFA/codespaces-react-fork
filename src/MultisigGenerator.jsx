@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { generateMultisigScript, isValidCompressedPubkey, generateP2SHAddress, generateP2WSHAddress } from './utils/cryptoUtils';
 import QRCode from 'qrcode';
 

@@ -41,5 +41,17 @@ services:
       timeout: 5s
       retries: 3
 
+  cosmosdb-emulator:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    container_name: cosmosdb-emulator
+    ports:
+      - "8081:8081"
+      - "10250-10255:10250-10255"  # For emulator UI and data explorer
+    environment:
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10
+      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+    volumes:
+      - ./cosmos-data:/tmp/cosmos/appdata  # Persist data locally
+
 # Note: this compose file runs the frontend (nginx) on host port 3000
 # and the image-processing service on 5000. Adjust ports as needed.

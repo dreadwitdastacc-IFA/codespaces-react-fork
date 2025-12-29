@@ -311,7 +311,7 @@ echo "Press Ctrl+Shift+P and run 'Developer: Reload Window'"
 There is no single universal command for this; use the Codespaces UI controls to restart the server if needed.
 
 ### Deployment
-=======
+
 # codespaces-react
 
 A minimal React app scaffolded for a Codespace. This project uses Vite, React, Vitest and ESLint.
@@ -325,7 +325,6 @@ npm install
 ```
 
 Run the dev server (binds to all interfaces):
->>>>>>> chore/split-chunks-readme
 
 ```bash
 npm start
@@ -373,3 +372,23 @@ Notes
 
 - A `.env` placeholder was created for `GITHUB_TOKEN` (replace with your token locally, do not commit secrets).
 - The build uses rollup `manualChunks` to split vendor modules into per-package chunks to reduce single large bundles.
+
+## Docker
+
+A simple Dockerfile has been added to this repository. It builds a small production image using Node 18 Alpine.
+
+Build locally:
+
+```bash
+docker build -t codespaces-react:latest .
+```
+
+Run locally (image expects a `server.js` entrypoint):
+
+```bash
+docker run -p 3000:3000 --rm codespaces-react:latest
+```
+
+CI: A GitHub Actions workflow `.github/workflows/docker-image.yml` is included that will build the image on pull requests and will push the image to GitHub Container Registry (GHCR) when changes are merged to `main`. The workflow uses the repository's `GITHUB_TOKEN` for authentication; ensure the repository has `packages: write` permissions enabled if you want automatic publishing.
+
+Publishing to another registry (Docker Hub) can be added by setting registry credentials as repository secrets and updating the workflow to log in with those secrets.

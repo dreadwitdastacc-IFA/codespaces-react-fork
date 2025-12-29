@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export const walletIcons = {
   litecoin: "⚡️",
@@ -17,3 +18,8 @@ export default function WalletIcon({ type, size = 24 }) {
     </span>
   );
 }
+
+WalletIcon.propTypes = {
+  type: PropTypes.string.isRequired,
+  size: PropTypes.number,
+};

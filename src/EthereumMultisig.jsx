@@ -41,8 +41,8 @@ function EthereumMultisig() {
   return (
     <div style={{ margin: '2rem 0', padding: '1rem', border: '1px solid #ccc', borderRadius: '8px' }}>
       <h2>Ethereum & BNB Multisig Setup</h2>
-      <p>Ethereum and BNB Smart Chain use smart contracts for multisig (unlike Bitcoin's script-based approach).</p>
-      <p><strong>Recommended: Use Gnosis Safe</strong> - The most secure and widely-used Ethereum multisig wallet.</p>
+      <p>Ethereum and BNB Smart Chain use smart contracts for multisig (unlike Bitcoin&#39;s script-based approach).</p>
+      <p><strong>Recommended: Use Gnosis Safe</strong> - The most secure and widely&#39;used Ethereum multisig wallet.</p>
 
       <div style={{ marginBottom: '1rem' }}>
         <label>Network:</label>

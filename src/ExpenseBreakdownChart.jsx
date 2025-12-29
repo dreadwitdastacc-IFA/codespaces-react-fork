@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 
@@ -35,6 +36,10 @@ const ExpenseBreakdownChart = ({ transactions }) => {
       <Pie data={data} />
     </div>
   );
+};
+
+ExpenseBreakdownChart.propTypes = {
+  transactions: PropTypes.array.isRequired,
 };
 
 export default ExpenseBreakdownChart;

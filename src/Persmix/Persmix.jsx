@@ -2,6 +2,7 @@
 // State of the art, top of the line, elite module for advanced use
 
 import React from "react";
+import PropTypes from "prop-types";
 
 /**
  * Persmix: The ultimate elite module for next-gen applications.
@@ -31,3 +32,9 @@ export default function Persmix({
     </div>
   );
 }
+
+Persmix.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  features: PropTypes.array,
+};

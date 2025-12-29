@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import "./Persmix.css";
 
 const COMMON_COMMANDS = [
@@ -47,7 +48,7 @@ function EliteTerminal({ onCommand }) {
         const saved = localStorage.getItem('elite_terminal_history');
         if (saved) setHistory(JSON.parse(saved));
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }, []);
@@ -60,7 +61,7 @@ function EliteTerminal({ onCommand }) {
       if (!isTest) {
         localStorage.setItem('elite_terminal_history', JSON.stringify(history));
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }, [history]);
@@ -202,5 +203,9 @@ function EliteTerminal({ onCommand }) {
     </div>
   );
 }
+
+EliteTerminal.propTypes = {
+  onCommand: PropTypes.func.isRequired,
+};
 
 export default EliteTerminal;

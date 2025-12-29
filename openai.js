@@ -1,14 +1,26 @@
 // openai.js - Node.js backend for OpenAI API integration and process.report configuration
+
+// Initialize OpenTelemetry tracing first (before any other imports)
+const { initializeTracing } = require("./src/config/tracing.js");
+initializeTracing("codespaces-react-backend");
+
 import "dotenv/config";
 import express from "express";
 import fetch from "node-fetch";
 import { exec } from "child_process";
 import { promisify } from "util";
+import path from "path";
 
 const execAsync = promisify(exec);
 
 const app = express();
 app.use(express.json());
+app.use(express.static('dist'));
+
+// Serve React app for any unmatched routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+});
 
 // --- Azure AI Inference setup ---
 const AZURE_ENDPOINT = process.env.AZURE_ENDPOINT || "https://models.inference.ai.azure.com";

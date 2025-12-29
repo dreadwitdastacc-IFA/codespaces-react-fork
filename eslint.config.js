@@ -1,8 +1,10 @@
 import js from '@eslint/js';
 import globals from 'globals';
+import reactPlugin from 'eslint-plugin-react';
 
 export default [
   js.configs.recommended,
+  reactPlugin.configs.flat.recommended,
   {
     files: ['src/**/*.{js,jsx}'],
     languageOptions: {
@@ -28,6 +30,7 @@ export default [
       'no-console': 'off',
       'prefer-const': 'error',
       'no-var': 'error',
+      'react/jsx-uses-vars': 'error',
     },
   },
   {

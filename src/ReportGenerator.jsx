@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function generateReport(transactions) {
   const income = transactions.filter(t => t.type === 'income').reduce((a, t) => a + t.amount, 0);
@@ -24,6 +25,10 @@ const ReportGenerator = ({ transactions }) => {
       </ul>
     </div>
   );
+};
+
+ReportGenerator.propTypes = {
+  transactions: PropTypes.array.isRequired,
 };
 
 export default ReportGenerator;

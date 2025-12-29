@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./App.css";
-import ExpenseBreakdown from "./ExpenseBreakdown";
-import ReportGenerator from "./ReportGenerator";
-
-import ExpenseBreakdownChart from "./ExpenseBreakdownChart";
-
-import LitecoinPriceBot from "./LitecoinPriceBot";
-
 import LitecoinMempoolTransactions from "./LitecoinMempoolTransactions";
 import LitecoinMempoolDashboard from "./LitecoinMempoolDashboard";
-import VideoCard from "./VideoCard";
-
+import ExpenseBreakdown from "./ExpenseBreakdown";
+import ReportGenerator from "./ReportGenerator";
 import defaultTransactions from "./data/transactions";
 import Persmix, {
   PersmixOpenAIChat,
@@ -22,10 +15,6 @@ import cosmosService from "./services/cosmosService";
 
 function App({ initialTransactions = defaultTransactions }) {
   const [transactions, setTransactions] = useState(initialTransactions);
-  const [walletType, setWalletType] = useState("litecoin");
-  const [walletAddress, setWalletAddress] = useState("");
-  const [etherscanKey, setEtherscanKey] = useState("");
-  const [customApi, setCustomApi] = useState("");
   const [syncStatus, setSyncStatus] = useState("idle");
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [cloudError, setCloudError] = useState(null);
@@ -51,20 +40,31 @@ function App({ initialTransactions = defaultTransactions }) {
     loadTransactions();
   }, []);
 
-  // Sync to Cosmos DB and localStorage
+  // Sync to Cosmos DB and localStorage (optimized: diff-based updates)
   useEffect(() => {
     const syncTransactions = async () => {
       try {
         setSyncStatus("syncing");
-        // For simplicity, replace all; in real app, diff
-        // But since small, delete all and add new
+        // Get existing transactions from Cosmos
         const existing = await cosmosService.getTransactions();
-        for (const tx of existing) {
+        const existingMap = new Map(existing.map(tx => [tx.id, tx]));
+        
+        // Identify additions, updates, deletions
+        const toAdd = transactions.filter(tx => !existingMap.has(tx.id));
+        const toUpdate = transactions.filter(tx => existingMap.has(tx.id) && JSON.stringify(tx) !== JSON.stringify(existingMap.get(tx.id)));
+        const toDelete = existing.filter(tx => !transactions.some(t => t.id === tx.id));
+        
+        // Perform operations
+        for (const tx of toDelete) {
           await cosmosService.deleteTransaction(tx.id, tx.type);
         }
-        for (const tx of transactions) {
+        for (const tx of toAdd) {
           await cosmosService.addTransaction(tx);
         }
+        for (const tx of toUpdate) {
+          await cosmosService.updateTransaction(tx);
+        }
+        
         setSyncStatus("synced");
         setCloudError(null);
       } catch (error) {
@@ -154,6 +154,22 @@ function App({ initialTransactions = defaultTransactions }) {
         </p>
       </header>
       <main style={{ padding: "2rem" }} role="main">
+        {/* Expense Breakdown Section */}
+        <section style={{ marginBottom: "2rem" }}>
+          <ExpenseBreakdown transactions={transactions} />
+        </section>
+        {/* Report Generator */}
+        <section style={{ marginBottom: "2rem" }}>
+          <ReportGenerator transactions={transactions} />
+        </section>
+        {/* Litecoin Mempool Transactions */}
+        <section style={{ marginBottom: "2rem" }}>
+          <LitecoinMempoolTransactions />
+        </section>
+        {/* Litecoin Mempool Dashboard */}
+        <section style={{ marginBottom: "2rem" }}>
+          <LitecoinMempoolDashboard />
+        </section>
         {/* Elite Wallet Loader UI */}
         <section
           style={{

@@ -2,11 +2,11 @@ name: Sentinel Pipeline – Orisa Aligned CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ Dreadwitdastacc-Ifawole, feat/cosmos-emulator-setup ]
     tags:
       - "v*.*.*"
   pull_request:
-    branches: [ main ]
+    branches: [ Dreadwitdastacc-Ifawole, feat/cosmos-emulator-setup ]
 
 permissions:
   contents: read
@@ -41,7 +41,7 @@ jobs:
   shango_build_and_push:
     name: Ṣàngó – Build & Push Multi-Arch Image
     needs: ogun_tests
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/Dreadwitdastacc-Ifawole'
     runs-on: ubuntu-latest
 
     steps:
@@ -152,7 +152,7 @@ jobs:
     name: Ọ̀ṣun – Deployment & Flow
     needs: [ orun_sign_image, oya_security_scan ]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/Dreadwitdastacc-Ifawole'
 
     steps:
       - name: Mark deployment start (Ọ̀ṣun opens the golden path)
