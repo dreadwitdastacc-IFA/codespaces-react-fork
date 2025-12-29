@@ -3,6 +3,9 @@
     "GitHub.vscode-pull-request-github",
     "GitHub.vscode-github-actions",
     "eamodio.gitlens",
-    "storybook.storybook-vscode"
+    "storybook.storybook-vscode",
+    "ms-vscode.remote-explorer",
+    "ms-vscode.remote-server",
+    "ms-azuretools.vscode-azurestorage"
   ]
 }
