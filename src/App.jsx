@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./App.css";
-import ProfitLossSummary from "./ProfitLossSummary";
 import ExpenseBreakdown from "./ExpenseBreakdown";
 import ReportGenerator from "./ReportGenerator";
 
