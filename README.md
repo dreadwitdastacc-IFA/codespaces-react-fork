@@ -311,12 +311,45 @@ echo "Press Ctrl+Shift+P and run 'Developer: Reload Window'"
 There is no single universal command for this; use the Codespaces UI controls to restart the server if needed.
 
 ### Deployment
+=======
+# codespaces-react
 
-This section has moved here: [https://vitejs.dev/guide/build.html](https://vitejs.dev/guide/build.html)
+A minimal React app scaffolded for a Codespace. This project uses Vite, React, Vitest and ESLint.
 
-### Troubleshooting
+Quick start
 
-This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](https://vitejs.dev/guide/troubleshooting.html)
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the dev server (binds to all interfaces):
+>>>>>>> chore/split-chunks-readme
+
+```bash
+npm start
+```
+
+Open in browser: http://localhost:3000 (Vite may pick another port if 3000 is in use)
+
+Run tests:
+
+```bash
+npm test
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Lint source:
+
+```bash
+npx eslint "src/**/*.{js,jsx}"
+```
 
 ## Support
 
@@ -335,3 +368,8 @@ You can also see `SUPPORT.md` for full contact details.
 echo "See project contributors" > CONTRIBUTORS.txt
 git add CONTRIBUTORS.txt && git commit -m "chore: add CONTRIBUTORS.txt"
 git push fork Dreadwitdastacc-Ifawole
+
+Notes
+
+- A `.env` placeholder was created for `GITHUB_TOKEN` (replace with your token locally, do not commit secrets).
+- The build uses rollup `manualChunks` to split vendor modules into per-package chunks to reduce single large bundles.
