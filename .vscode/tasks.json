@@ -1,0 +1,258 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-frontend",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "build"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$tsc",
+                "$eslint-stylish"
+            ]
+        },
+        {
+            "label": "build-storybook",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "build-storybook"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "test"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "start-dev-server",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "start"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "start-backend",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "server"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "start-storybook",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "storybook"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "start-cosmos-emulator",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "emulator:run"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "stop-cosmos-emulator",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "emulator:stop"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "label": "install-dependencies",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "install"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "label": "lint",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "lint"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$eslint-stylish"
+            ]
+        },
+        {
+            "label": "start-all-services",
+            "dependsOn": [
+                "start-cosmos-emulator",
+                "start-backend",
+                "start-dev-server"
+            ],
+            "group": "build",
+            "dependsOrder": "sequence"
+        },
+        {
+            "label": "watch-build",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "build",
+                "--",
+                "--watch"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "problemMatcher": [
+                "$tsc",
+                "$eslint-stylish"
+            ]
+        },
+        {
+            "label": "dev-full",
+            "dependsOn": [
+                "start-cosmos-emulator",
+                "start-backend",
+                "start-dev-server"
+            ],
+            "group": "build",
+            "dependsOrder": "sequence",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        }
+    ]
+}
