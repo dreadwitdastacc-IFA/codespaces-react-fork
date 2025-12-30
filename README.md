@@ -392,3 +392,5 @@ docker run -p 3000:3000 --rm codespaces-react:latest
 CI: A GitHub Actions workflow `.github/workflows/docker-image.yml` is included that will build the image on pull requests and will push the image to GitHub Container Registry (GHCR) when changes are merged to `main`. The workflow uses the repository's `GITHUB_TOKEN` for authentication; ensure the repository has `packages: write` permissions enabled if you want automatic publishing.
 
 Publishing to another registry (Docker Hub) can be added by setting registry credentials as repository secrets and updating the workflow to log in with those secrets.
+
+Sample patch placeholder
