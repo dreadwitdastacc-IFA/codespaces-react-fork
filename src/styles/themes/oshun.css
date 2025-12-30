@@ -1,0 +1,19 @@
+/* Theme: Oshun — light, radiant */
+:root[data-theme="oshun"]{
+  --oshun-bg: oklch(85% 0.18 95);
+  --oshun-surface: oklch(92% 0.06 95);
+  --oshun-text: oklch(12% 0.02 95);
+  --oshun-accent: oklch(60% 0.18 95);
+  --oshun-radius: 10px;
+  --oshun-code-bg: rgba(0,0,0,0.03);
+}
+
+[data-theme="oshun"]{
+  background: var(--oshun-bg);
+  color: var(--oshun-text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+[data-theme="oshun"] .card { background: var(--oshun-surface); color: var(--oshun-text); border-radius: var(--oshun-radius); }
+[data-theme="oshun"] .btn { background: var(--oshun-accent); color: white; border-radius: 8px; padding: .5rem .9rem; }
+[data-theme="oshun"] a { color: var(--oshun-accent); text-decoration: none; font-weight:600; }

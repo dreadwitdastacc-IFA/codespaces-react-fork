@@ -1,0 +1,10 @@
+/* Component pattern examples */
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.5rem 1rem;border-radius:.5rem;border:0;cursor:pointer;
+  background:var(--shango);color:white;
+}
+.card{
+  background:color-mix(in srgb, var(--oya) 8%, white);
+  padding:1rem;border-radius:.5rem;box-shadow:0 6px 18px rgba(0,0,0,.06);
+}

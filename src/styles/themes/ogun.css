@@ -1,0 +1,20 @@
+/* Theme: Ogun — cool, deep UI using OKLCH token from base */
+:root[data-theme="ogun"] {
+  --ogun-bg: oklch(40% 0.15 260);
+  --ogun-surface: oklch(36% 0.08 260);
+  --ogun-text: oklch(98% 0.02 260);
+  --ogun-accent: oklch(55% 0.10 260);
+  --ogun-muted: oklch(60% 0.03 260);
+  --ogun-radius: 10px;
+  --ogun-code-bg: rgba(255,255,255,0.02);
+}
+
+[data-theme="ogun"] {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ogun-bg) 94%, black 6%), var(--ogun-bg));
+  color: var(--ogun-text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+[data-theme="ogun"] .card { background: var(--ogun-surface); color: var(--ogun-text); border-radius: var(--ogun-radius); }
+[data-theme="ogun"] .btn { background: var(--ogun-accent); color: white; border-radius: 8px; padding: .5rem .9rem; }
+[data-theme="ogun"] a { color: var(--ogun-accent); text-decoration: none; font-weight:600; }

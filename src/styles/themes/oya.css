@@ -1,0 +1,19 @@
+/* Theme: Oya — vibrant, high-contrast accent */
+:root[data-theme="oya"]{
+  --oya-bg: oklch(65% 0.20 330);
+  --oya-surface: oklch(60% 0.10 330);
+  --oya-text: oklch(6% 0.02 330);
+  --oya-accent: oklch(70% 0.22 330);
+  --oya-radius: 10px;
+  --oya-code-bg: rgba(255,255,255,0.02);
+}
+
+[data-theme="oya"]{
+  background: linear-gradient(180deg, var(--oya-bg), color-mix(in srgb, var(--oya-bg) 92%, black 8%));
+  color: var(--oya-text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+[data-theme="oya"] .card { background: var(--oya-surface); color: var(--oya-text); border-radius: var(--oya-radius); }
+[data-theme="oya"] .btn { background: var(--oya-accent); color: white; border-radius: 8px; padding: .5rem .9rem; }
+[data-theme="oya"] a { color: var(--oya-accent); text-decoration: none; font-weight:600; }

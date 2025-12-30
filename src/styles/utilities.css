@@ -1,0 +1,5 @@
+/* Small utility examples */
+.m-18{margin:var(--sp-18)}
+.p-18{padding:var(--sp-18)}
+.text-ogun{color:var(--ogun)}
+.bg-oshun{background-color:var(--oshun)}
