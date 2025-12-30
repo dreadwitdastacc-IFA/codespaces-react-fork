@@ -2,9 +2,8 @@
   "name": "codespaces-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gogetumminmine.com",
-  "license": "MIT",
   "homepage": "https://mywebsite.com",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
