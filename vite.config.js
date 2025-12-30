@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
+import fs from 'fs';
 /** @type {import('vite').UserConfig} */
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
+import { VitePWA } from "vite-plugin-pwa";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -10,7 +12,18 @@ const __dirname = path.dirname(__filename);
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/",
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      includeAssets: ["favicon.ico", "apple-touch-icon.png", "assets/*"],
+      // Use the public manifest.json when present; plugin will read this file
+      // and include the referenced icons/assets during build.
+      manifest: JSON.parse(fs.readFileSync(new URL('./public/manifest.json', import.meta.url), 'utf8')),
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}']
+      }
+    })
+  ],
 
   resolve: {
     alias: {

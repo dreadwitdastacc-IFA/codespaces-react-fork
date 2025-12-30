@@ -5,8 +5,8 @@ export default {
     // Core: CSS nesting with full spec alignment
     'postcss-nesting': {},
 
-    // tailwind is used via PostCSS
-    tailwindcss: {},
+    // tailwind is used via PostCSS (use the maintained PostCSS plugin package)
+    '@tailwindcss/postcss': {},
 
     // Autoprefixer with modern browser targeting
     autoprefixer: {
@@ -30,18 +30,10 @@ export default {
       : {}),
 
     // Optional: Custom media queries for design systems
-    'postcss-custom-media': {
-      importFrom: [
-        {
-          customMedia: {
-            '--sm': '(min-width: 640px)',
-            '--md': '(min-width: 768px)',
-            '--lg': '(min-width: 1024px)',
-            '--xl': '(min-width: 1280px)',
-          },
-        },
-      ],
-    },
+    // Note: postcss-custom-media "importFrom" option removed because newer
+    // versions no longer support it. Define custom media queries inline
+    // in your CSS or migrate to `postcss-preset-env` if you need to use
+    // centralized imports.
 
     // Optional: Logical properties for cross‑platform layouts
     'postcss-logical': {},
