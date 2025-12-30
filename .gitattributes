@@ -1,0 +1,10 @@
+# keep current branch version for lockfiles/build outputs
+package-lock.json merge=ours
+yarn.lock merge=ours
+dist/** merge=ours
+
+[merge]
+    ours.driver = true
+
+[rerere]
+    enabled = true
