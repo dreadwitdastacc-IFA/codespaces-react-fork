@@ -21,7 +21,7 @@ min() {
 }
 
 if [ -z "${NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE}" ]; then
-  return 0
+  exit 0
 fi
 
 touch $NGINX_CONF_FILE 2>/dev/null || { echo >&3 "$ME: error: can not modify $NGINX_CONF_FILE (read-only file system?)"; exit 0; }
@@ -202,18 +202,12 @@ else
   ncpu=$( min "$ncpu_cpuset" "$ncpu_quota" )
 fi
 
-if command -v nproc > /dev/null && [ "$ncpu" -gt "$( nproc )" ]; then
-  ncpu=$( nproc )
-fi
-
 if [ "$ncpu" -eq 0 ]; then
   ncpu=1
 fi
 
-if is_command nproc; then
-  if [ "$ncpu" -gt "$(nproc)" ]; then
-    ncpu="$(nproc)"
-  fi
+if command -v nproc > /dev/null && [ "$ncpu" -gt "$( nproc )" ]; then
+  ncpu=$( nproc )
 fi
 
 echo >&3 "$ME: info: setting worker_processes to $ncpu"
