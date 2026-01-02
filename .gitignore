@@ -122,6 +122,11 @@ dist
 .env.test.local
 .env.production.local
 
+# Vim swap files
+*.swp
+*.swo
+*~
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

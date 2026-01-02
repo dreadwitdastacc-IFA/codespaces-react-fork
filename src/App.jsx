@@ -1,4 +1,3 @@
-
 import './App.css';
 import ProfitLossSummary from './ProfitLossSummary';
 import ExpenseBreakdown from './ExpenseBreakdown';
@@ -8,7 +7,8 @@ import ExpenseBreakdownChart from './ExpenseBreakdownChart';
 
 import LitecoinPriceBot from './LitecoinPriceBot';
 
-import LitecoinMempoolTransactions, { LitecoinMempoolDashboard } from './LitecoinMempoolTransactions';
+import LitecoinMempoolTransactions from './LitecoinMempoolTransactions';
+import LitecoinMempoolDashboard from './LitecoinMempoolDashboard';
 
 const transactions = [
   { type: 'income', category: 'sales', amount: 1200 },

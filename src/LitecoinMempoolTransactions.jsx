@@ -52,44 +52,5 @@ const LitecoinMempoolTransactions = () => {
   );
 };
 
-export { LitecoinMempoolTransactions };
 export default LitecoinMempoolTransactions;
-
-const API_URL = 'https://mempool.space/api/litecoin/mempool';
-const LitecoinMempoolDashboard = () => {
-  const [mempool, setMempool] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        setMempool(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError('Failed to fetch mempool data');
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return <div>Loading Litecoin mempool...</div>;
-  if (error) return <div>{error}</div>;
-  if (!mempool) return <div>No mempool data available.</div>;
-
-  return (
-    <div style={{ margin: '2rem 0', padding: '1rem', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h2>Litecoin Mempool Dashboard</h2>
-      <ul>
-        <li><strong>Count:</strong> {mempool.count}</li>
-        <li><strong>Total Size (vsize):</strong> {mempool.vsize} vbytes</li>
-        <li><strong>Total Fees:</strong> {mempool.total_fee} litoshi</li>
-      </ul>
-      <p>Data from <a href="https://mempool.space/litecoin/" target="_blank" rel="noopener noreferrer">mempool.space</a></p>
-    </div>
-  );
-};
-
-export { LitecoinMempoolDashboard };
 
