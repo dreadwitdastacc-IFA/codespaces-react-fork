@@ -11,7 +11,9 @@ RUN npm ci --only=production
 
 # Copy source code
 COPY openai.js ./
-COPY .env ./
+
+# Copy .env if it exists (optional)
+COPY .env* ./
 
 # Expose port
 EXPOSE 3001

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { fetchOpenAIChat } from "./index";
 import cosmosService from "../services/cosmosService";
+import { useAuth } from "../AuthContext";
 
 export default function PersmixOpenAIChat() {
+  const { user } = useAuth();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -10,7 +12,7 @@ export default function PersmixOpenAIChat() {
   const [model, setModel] = useState("gpt-4o");
   const [enableTools, setEnableTools] = useState(true);
   const [iterations, setIterations] = useState(0);
-  const userId = "default"; // For demo, single user
+  const userId = user?.id || "default";
 
   // Load chat history on mount
   useEffect(() => {

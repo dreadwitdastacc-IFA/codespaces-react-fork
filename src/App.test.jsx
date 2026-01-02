@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { renderWithProviders, mockApiResponse } from './test-utils';
+import { renderWithProviders, mockApiResponse } from './test-utils.jsx';
 import App from './App';
 
 // Mock lazy-loaded components
