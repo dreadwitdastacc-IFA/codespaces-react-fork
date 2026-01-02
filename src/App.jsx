@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./App.css";
@@ -6,6 +7,23 @@ import ExpenseBreakdown from "./ExpenseBreakdown";
 import ReportGenerator from "./ReportGenerator";
 
 import ExpenseBreakdownChart from "./ExpenseBreakdownChart";
+=======
+/**
+ * @file App.jsx
+ * @description Main application component. Renders the dashboard header and all main widgets.
+ */
+
+
+
+/**
+ * @file App.jsx
+ * @description Main application component. Renders the dashboard header and all main widgets.
+ */import React from 'react';
+import './App.css';
+import ProfitLossSummary from './ProfitLossSummary';
+import ExpenseBreakdown from './ExpenseBreakdown';
+import ReportGenerator from './ReportGenerator';
+>>>>>>> chore/split-chunks-readme
 
 import LitecoinPriceBot from "./LitecoinPriceBot";
 
