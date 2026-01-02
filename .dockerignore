@@ -1,3 +1,11 @@
+cd /path/to/your/local/clone
+git checkout -b feat/testcontainers-cloud-check
+git apply /path/to/changes.patch         # apply the patches you want (outer/inner)
+git add -A
+git commit -m "Make Testcontainers cloud assertion opt-in via env var; add PR trigger workflow"
+git push --set-upstream origin feat/testcontainers-cloud-check
+cd /workspaces/codespaces-react
+git diff > /tmp/my-local-changes.patch
 node_modules
 npm-debug.log
 dist

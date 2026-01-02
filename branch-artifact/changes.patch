@@ -1,0 +1,6 @@
+diff --git a/testcontainers-cloud-java-example b/testcontainers-cloud-java-example
+--- a/testcontainers-cloud-java-example
++++ b/testcontainers-cloud-java-example
+@@ -1 +1 @@
+-Subproject commit 8791749be62b251f06f9feaa9eb1121b9783074c
++Subproject commit 8791749be62b251f06f9feaa9eb1121b9783074c-dirty
