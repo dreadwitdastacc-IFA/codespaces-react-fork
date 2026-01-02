@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 // Allow API URL override via environment variable for proxy/firewall workarounds
 const TX_API_URL = import.meta.env.VITE_MEMPOOL_API_URL || 'https://mempool.space/api/litecoin/txs/mempool';
 
+// Maximum number of transactions to display
+const MAX_TRANSACTIONS_DISPLAY = 50;
+
 // Fallback mock data when API is unreachable (e.g., blocked by firewall)
 const FALLBACK_TRANSACTIONS = [
   {
@@ -82,7 +85,7 @@ const LitecoinMempoolTransactions = () => {
           </tr>
         </thead>
         <tbody>
-          {txs.slice(0, 50).map(tx => (
+          {txs.slice(0, MAX_TRANSACTIONS_DISPLAY).map(tx => (
             <tr key={tx.txid}>
               <td style={{ wordBreak: 'break-all' }}>{tx.txid}</td>
               <td>{tx.fee}</td>
@@ -92,7 +95,7 @@ const LitecoinMempoolTransactions = () => {
           ))}
         </tbody>
       </table>
-      <p>Showing up to 50 {usedFallback ? 'sample' : 'latest'} transactions.</p>
+      <p>Showing up to {MAX_TRANSACTIONS_DISPLAY} {usedFallback ? 'sample' : 'latest'} transactions.</p>
     </div>
   );
 };

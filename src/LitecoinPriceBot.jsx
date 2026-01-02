@@ -43,7 +43,7 @@ const LitecoinPriceBot = () => {
   }, []);
 
   if (loading) return <div>Loading Litecoin price...</div>;
-  if (price === null) return <div>No price data available.</div>;
+  if (price === null || price === undefined) return <div>No price data available.</div>;
 
   return (
     <div style={{ margin: '1rem 0', padding: '1rem', border: '1px solid #b0b0b0', borderRadius: '8px', background: usedFallback ? '#fff3cd' : '#f8f8f8' }}>
