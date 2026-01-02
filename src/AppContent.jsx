@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import "./App.css";
-import ProfitLossSummary from "./ProfitLossSummary";
-import ExpenseBreakdown from "./ExpenseBreakdown";
-import ReportGenerator from "./ReportGenerator";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import './App.css';
+import ProfitLossSummary from './ProfitLossSummary';
+import ExpenseBreakdown from './ExpenseBreakdown';
+import ReportGenerator from './ReportGenerator';
 
-import ExpenseBreakdownChart from "./ExpenseBreakdownChart";
+import ExpenseBreakdownChart from './ExpenseBreakdownChart';
 
-import LitecoinPriceBot from "./LitecoinPriceBot";
+import LitecoinPriceBot from './LitecoinPriceBot';
 
-import LitecoinMempoolTransactions from "./LitecoinMempoolTransactions";
-import LitecoinMempoolDashboard from "./LitecoinMempoolDashboard";
-import BitcoinMempoolTransactions from "./BitcoinMempoolTransactions";
-import BitcoinMempoolDashboard from "./BitcoinMempoolDashboard";
-import BlockscanExplorer from "./BlockscanExplorer";
-import WalletManager from "./WalletManager";
-import VideoCard from "./VideoCard";
+import LitecoinMempoolTransactions from './LitecoinMempoolTransactions';
+import LitecoinMempoolDashboard from './LitecoinMempoolDashboard';
+import BitcoinMempoolTransactions from './BitcoinMempoolTransactions';
+import BitcoinMempoolDashboard from './BitcoinMempoolDashboard';
+import BlockscanExplorer from './BlockscanExplorer';
+import WalletManager from './WalletManager';
+import VideoCard from './VideoCard';
 
-import defaultTransactions from "./data/transactions";
+import defaultTransactions from './data/transactions';
 import Persmix, {
   PersmixOpenAIChat,
   EliteTerminal,
   SystemStatus,
-} from "./Persmix";
-import cosmosService from "./services/cosmosService";
-import { useAuth } from "./AuthContext";
+} from './Persmix';
+import cosmosService from './services/cosmosService';
+import { useAuth } from './AuthContext';
 
 function AppContent({ initialTransactions = defaultTransactions }) {
   const { user, logout } = useAuth();
   const [transactions, setTransactions] = useState(initialTransactions);
-  const [walletType, setWalletType] = useState("litecoin");
-  const [walletAddress, setWalletAddress] = useState("");
-  const [etherscanKey, setEtherscanKey] = useState("");
-  const [customApi, setCustomApi] = useState("");
-  const [syncStatus, setSyncStatus] = useState("idle");
+  const [walletType, setWalletType] = useState('litecoin');
+  const [walletAddress, setWalletAddress] = useState('');
+  const [etherscanKey, setEtherscanKey] = useState('');
+  const [customApi, setCustomApi] = useState('');
+  const [syncStatus, setSyncStatus] = useState('idle');
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [cloudError, setCloudError] = useState(null);
   const [wallets, setWallets] = useState({});
@@ -50,7 +50,7 @@ function AppContent({ initialTransactions = defaultTransactions }) {
       } catch (error) {
         console.error('Failed to load from Cosmos DB:', error);
         // Fallback to localStorage
-        const saved = localStorage.getItem("transactions");
+        const saved = localStorage.getItem('transactions');
         if (saved) {
           setTransactions(JSON.parse(saved));
         }
@@ -67,16 +67,16 @@ function AppContent({ initialTransactions = defaultTransactions }) {
     <div className="App">
       <div
         style={{
-          background: isOnline ? "#e0ffe0" : "#ffe0e0",
-          padding: "0.5rem",
-          textAlign: "center",
+          background: isOnline ? '#e0ffe0' : '#ffe0e0',
+          padding: '0.5rem',
+          textAlign: 'center',
         }}
       >
-        {isOnline ? "Online" : "Offline"} | Sync: {syncStatus}
+        {isOnline ? 'Online' : 'Offline'} | Sync: {syncStatus}
         {cloudError && (
-          <span style={{ color: "red", marginLeft: 8 }}>{cloudError}</span>
+          <span style={{ color: 'red', marginLeft: 8 }}>{cloudError}</span>
         )}
-        <div style={{ float: "right" }}>
+        <div style={{ float: 'right' }}>
           Welcome, {user?.id} | <button onClick={logout}>Logout</button>
         </div>
       </div>
@@ -93,9 +93,9 @@ function AppContent({ initialTransactions = defaultTransactions }) {
             <p
               className="tagline"
               style={{
-                fontSize: "1.2rem",
-                margin: "1rem 0",
-                fontWeight: "300",
+                fontSize: '1.2rem',
+                margin: '1rem 0',
+                fontWeight: '300',
               }}
             >
               Advanced Cryptocurrency Mining & Farming Platform
@@ -112,30 +112,30 @@ function AppContent({ initialTransactions = defaultTransactions }) {
             Learn React
           </a>
         </nav>
-        <p className="small" style={{ marginTop: "0.75rem" }}>
+        <p className="small" style={{ marginTop: '0.75rem' }}>
           Track Litecoin mempool transactions, monitor mining profitability, and
           optimize your crypto farming operations with real-time data and
           powerful analytics.
         </p>
       </header>
-      <main style={{ padding: "2rem" }} role="main">
+      <main style={{ padding: '2rem' }} role="main">
         {/* Elite Wallet Loader UI */}
         <section
           style={{
-            marginBottom: "2.5rem",
+            marginBottom: '2.5rem',
             borderRadius: 16,
-            boxShadow: "0 2px 16px #0001",
-            background: "#fff",
+            boxShadow: '0 2px 16px #0001',
+            background: '#fff',
             padding: 24,
             maxWidth: 700,
-            marginLeft: "auto",
-            marginRight: "auto",
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}
         >
           <h2
             style={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
               gap: 8,
               fontSize: 22,
               fontWeight: 700,
@@ -148,7 +148,7 @@ function AppContent({ initialTransactions = defaultTransactions }) {
                 fontSize: 14,
                 fontWeight: 400,
                 marginLeft: 8,
-                color: "#888",
+                color: '#888',
               }}
               title="Supports major blockchains and custom APIs"
             >
@@ -157,7 +157,7 @@ function AppContent({ initialTransactions = defaultTransactions }) {
           </h2>
           {/* Wallet loader form - simplified for brevity */}
           <form>
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               <select
                 value={walletType}
                 onChange={(e) => setWalletType(e.target.value)}
@@ -169,13 +169,13 @@ function AppContent({ initialTransactions = defaultTransactions }) {
                 <option value="custom">Custom API</option>
               </select>
             </div>
-            {walletType === "custom" && (
+            {walletType === 'custom' && (
               <input
                 type="url"
                 placeholder="Custom API URL"
                 value={customApi}
                 onChange={(e) => setCustomApi(e.target.value)}
-                style={{ width: "100%", padding: 8, marginBottom: 8 }}
+                style={{ width: '100%', padding: 8, marginBottom: 8 }}
               />
             )}
             <input
@@ -183,27 +183,27 @@ function AppContent({ initialTransactions = defaultTransactions }) {
               placeholder="Wallet Address"
               value={walletAddress}
               onChange={(e) => setWalletAddress(e.target.value)}
-              style={{ width: "100%", padding: 8, marginBottom: 8 }}
+              style={{ width: '100%', padding: 8, marginBottom: 8 }}
             />
-            {walletType === "ethereum" && (
+            {walletType === 'ethereum' && (
               <input
                 type="password"
                 placeholder="Etherscan API Key"
                 value={etherscanKey}
                 onChange={(e) => setEtherscanKey(e.target.value)}
-                style={{ width: "100%", padding: 8, marginBottom: 8 }}
+                style={{ width: '100%', padding: 8, marginBottom: 8 }}
               />
             )}
             <button
               type="submit"
               style={{
-                width: "100%",
+                width: '100%',
                 padding: 12,
-                background: "#007bff",
-                color: "white",
-                border: "none",
+                background: '#007bff',
+                color: 'white',
+                border: 'none',
                 borderRadius: 4,
-                cursor: "pointer",
+                cursor: 'pointer',
               }}
             >
               Load Transactions
@@ -229,13 +229,16 @@ function AppContent({ initialTransactions = defaultTransactions }) {
 
         <BlockscanExplorer />
 
-        <WalletManager wallets={wallets} onUpdateWallet={(walletKey, data) => {
-          // Update wallets state if needed
-          setWallets(prev => ({
-            ...prev,
-            [walletKey]: { ...prev[walletKey], ...data }
-          }));
-        }} />
+        <WalletManager
+          wallets={wallets}
+          onUpdateWallet={(walletKey, data) => {
+            // Update wallets state if needed
+            setWallets((prev) => ({
+              ...prev,
+              [walletKey]: { ...prev[walletKey], ...data },
+            }));
+          }}
+        />
 
         <VideoCard />
         <EliteTerminal />

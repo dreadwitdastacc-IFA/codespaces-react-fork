@@ -1,12 +1,12 @@
-import React from "react";
-import { useMempool } from "../../hooks/useMempool";
-import FeeChart from "./FeeChart";
-import MempoolBlocksTable from "./MempoolBlocksTable";
-import AlertsPanel from "./AlertsPanel";
-import AddressLookup from "./AddressLookup";
-import WalletManager from "./WalletManager";
-import MultiChainDashboard from "./MultiChainDashboard";
-import MultiChainOrisa from "./MultiChainOrisa";
+import React from 'react';
+import { useMempool } from '../../hooks/useMempool';
+import FeeChart from './FeeChart';
+import MempoolBlocksTable from './MempoolBlocksTable';
+import AlertsPanel from './AlertsPanel';
+import AddressLookup from './AddressLookup';
+import WalletManager from './WalletManager';
+import MultiChainDashboard from './MultiChainDashboard';
+import MultiChainOrisa from './MultiChainOrisa';
 
 export default function Dashboard() {
   const { mempoolBlocks, stats, orisaSignal, alerts } = useMempool();
@@ -15,7 +15,7 @@ export default function Dashboard() {
     <div style={{ padding: 20 }}>
       <h1>GoGetumminmine Mempool Monitor</h1>
 
-      <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
+      <div style={{ display: 'flex', gap: 20, marginBottom: 20 }}>
         <AddressLookup />
         <WalletManager />
       </div>
@@ -34,7 +34,7 @@ export default function Dashboard() {
         )}
       </div>
 
-      <div style={{ display: "flex", gap: 24 }}>
+      <div style={{ display: 'flex', gap: 24 }}>
         <div style={{ flex: 2 }}>
           <FeeChart stats={stats} />
           <MempoolBlocksTable mempoolBlocks={mempoolBlocks} />

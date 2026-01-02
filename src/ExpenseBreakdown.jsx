@@ -2,7 +2,7 @@ import React from 'react';
 
 function getExpenseBreakdown(transactions) {
   const breakdown = {};
-  transactions.forEach(t => {
+  transactions.forEach((t) => {
     if (t.type === 'expense') {
       breakdown[t.category] = (breakdown[t.category] || 0) + t.amount;
     }
@@ -17,7 +17,9 @@ const ExpenseBreakdown = ({ transactions }) => {
       <h2>Expense Breakdown</h2>
       <ul>
         {Object.entries(breakdown).map(([cat, amt]) => (
-          <li key={cat}>{cat}: ${amt}</li>
+          <li key={cat}>
+            {cat}: ${amt}
+          </li>
         ))}
       </ul>
     </div>

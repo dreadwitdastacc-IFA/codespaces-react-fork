@@ -16,8 +16,18 @@ const RITUAL_MARKERS = [
 ];
 
 const ORISA_DEITIES = [
-  'Ṣàngó', 'Ọ̀ṣun', 'Yemoja', 'Ògún', 'Ọya', 'Èṣù', 'Òbàtálá',
-  'Ìyámi Òṣòròngà', 'Àjẹ́', 'Òrúnmìlà', 'Ìrúnmọlẹ̀', 'Òrìṣà'
+  'Ṣàngó',
+  'Ọ̀ṣun',
+  'Yemoja',
+  'Ògún',
+  'Ọya',
+  'Èṣù',
+  'Òbàtálá',
+  'Ìyámi Òṣòròngà',
+  'Àjẹ́',
+  'Òrúnmìlà',
+  'Ìrúnmọlẹ̀',
+  'Òrìṣà',
 ];
 
 function WalletManager({ wallets, onUpdateWallet }) {
@@ -30,7 +40,7 @@ function WalletManager({ wallets, onUpdateWallet }) {
     orisa: '',
     verified: false,
     ritualMarker: '',
-    tags: []
+    tags: [],
   });
 
   useEffect(() => {
@@ -56,22 +66,25 @@ function WalletManager({ wallets, onUpdateWallet }) {
       orisa: existing.orisa || '',
       verified: existing.verified || false,
       ritualMarker: existing.ritualMarker || '',
-      tags: existing.tags || []
+      tags: existing.tags || [],
     });
   };
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const handleTagsChange = (value) => {
-    const tags = value.split(',').map(tag => tag.trim()).filter(tag => tag);
-    setFormData(prev => ({
+    const tags = value
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag);
+    setFormData((prev) => ({
       ...prev,
-      tags
+      tags,
     }));
   };
 
@@ -83,20 +96,22 @@ function WalletManager({ wallets, onUpdateWallet }) {
       [selectedWallet]: {
         ...formData,
         address: selectedWallet,
-        lastUpdated: new Date().toISOString()
-      }
+        lastUpdated: new Date().toISOString(),
+      },
     };
 
     saveWalletData(updatedData);
-    onUpdateWallet && onUpdateWallet(selectedWallet, updatedData[selectedWallet]);
+    onUpdateWallet &&
+      onUpdateWallet(selectedWallet, updatedData[selectedWallet]);
   };
 
   const exportWalletData = () => {
     const dataStr = JSON.stringify(walletData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
+    const dataUri =
+      'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
     const exportFileDefaultName = 'orisa-wallets.json';
-    
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
@@ -121,7 +136,14 @@ function WalletManager({ wallets, onUpdateWallet }) {
   };
 
   return (
-    <div style={{ margin: '2rem 0', padding: '1rem', border: '1px solid #ddd', borderRadius: '8px' }}>
+    <div
+      style={{
+        margin: '2rem 0',
+        padding: '1rem',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+      }}
+    >
       <h2>Òrìṣà Wallet Manager - Sacred Connections & Ritual Markers</h2>
 
       <div style={{ display: 'flex', gap: '2rem' }}>
@@ -138,7 +160,7 @@ function WalletManager({ wallets, onUpdateWallet }) {
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
               }}
             >
               Import Sample Òrìṣà Wallet
@@ -152,20 +174,22 @@ function WalletManager({ wallets, onUpdateWallet }) {
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
               }}
             >
               Export Wallets
             </button>
-            <label style={{
-              padding: '0.5rem 1rem',
-              backgroundColor: '#28a745',
-              color: 'white',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '0.9rem',
-              display: 'inline-block'
-            }}>
+            <label
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: '#28a745',
+                color: 'white',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                display: 'inline-block',
+              }}
+            >
               Import from File
               <input
                 type="file"
@@ -175,16 +199,24 @@ function WalletManager({ wallets, onUpdateWallet }) {
               />
             </label>
           </div>
-          <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #eee', borderRadius: '4px' }}>
-            {Object.keys(wallets || {}).map(walletKey => (
+          <div
+            style={{
+              maxHeight: '400px',
+              overflowY: 'auto',
+              border: '1px solid #eee',
+              borderRadius: '4px',
+            }}
+          >
+            {Object.keys(wallets || {}).map((walletKey) => (
               <div
                 key={walletKey}
                 onClick={() => handleWalletSelect(walletKey)}
                 style={{
                   padding: '0.5rem',
                   cursor: 'pointer',
-                  backgroundColor: selectedWallet === walletKey ? '#e3f2fd' : 'white',
-                  borderBottom: '1px solid #f0f0f0'
+                  backgroundColor:
+                    selectedWallet === walletKey ? '#e3f2fd' : 'white',
+                  borderBottom: '1px solid #f0f0f0',
                 }}
               >
                 {getWalletDisplay(walletKey)}
@@ -200,7 +232,13 @@ function WalletManager({ wallets, onUpdateWallet }) {
               <h3>Manage: {selectedWallet}</h3>
 
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '0.5rem',
+                    fontWeight: 'bold',
+                  }}
+                >
                   Label (Display Name)
                 </label>
                 <input
@@ -212,13 +250,19 @@ function WalletManager({ wallets, onUpdateWallet }) {
                     width: '100%',
                     padding: '0.5rem',
                     border: '1px solid #ddd',
-                    borderRadius: '4px'
+                    borderRadius: '4px',
                   }}
                 />
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '0.5rem',
+                    fontWeight: 'bold',
+                  }}
+                >
                   Òrìṣà (Deity)
                 </label>
                 <select
@@ -228,18 +272,26 @@ function WalletManager({ wallets, onUpdateWallet }) {
                     width: '100%',
                     padding: '0.5rem',
                     border: '1px solid #ddd',
-                    borderRadius: '4px'
+                    borderRadius: '4px',
                   }}
                 >
                   <option value="">Select Òrìṣà...</option>
-                  {ORISA_DEITIES.map(orisa => (
-                    <option key={orisa} value={orisa}>{orisa}</option>
+                  {ORISA_DEITIES.map((orisa) => (
+                    <option key={orisa} value={orisa}>
+                      {orisa}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '0.5rem',
+                    fontWeight: 'bold',
+                  }}
+                >
                   Tag
                 </label>
                 <input
@@ -251,13 +303,19 @@ function WalletManager({ wallets, onUpdateWallet }) {
                     width: '100%',
                     padding: '0.5rem',
                     border: '1px solid #ddd',
-                    borderRadius: '4px'
+                    borderRadius: '4px',
                   }}
                 />
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '0.5rem',
+                    fontWeight: 'bold',
+                  }}
+                >
                   Note
                 </label>
                 <textarea
@@ -270,13 +328,19 @@ function WalletManager({ wallets, onUpdateWallet }) {
                     padding: '0.5rem',
                     border: '1px solid #ddd',
                     borderRadius: '4px',
-                    resize: 'vertical'
+                    resize: 'vertical',
                   }}
                 />
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '0.5rem',
+                    fontWeight: 'bold',
+                  }}
+                >
                   Additional Tags (comma-separated)
                 </label>
                 <input
@@ -288,27 +352,41 @@ function WalletManager({ wallets, onUpdateWallet }) {
                     width: '100%',
                     padding: '0.5rem',
                     border: '1px solid #ddd',
-                    borderRadius: '4px'
+                    borderRadius: '4px',
                   }}
                 />
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '0.5rem',
+                    fontWeight: 'bold',
+                  }}
+                >
                   Ritual Marker
                 </label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  {RITUAL_MARKERS.map(marker => (
+                <div
+                  style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}
+                >
+                  {RITUAL_MARKERS.map((marker) => (
                     <button
                       key={marker}
                       onClick={() => handleInputChange('ritualMarker', marker)}
                       style={{
                         padding: '0.5rem',
                         fontSize: '1.2rem',
-                        border: formData.ritualMarker === marker ? '2px solid #007bff' : '1px solid #ddd',
+                        border:
+                          formData.ritualMarker === marker
+                            ? '2px solid #007bff'
+                            : '1px solid #ddd',
                         borderRadius: '4px',
-                        backgroundColor: formData.ritualMarker === marker ? '#e3f2fd' : 'white',
-                        cursor: 'pointer'
+                        backgroundColor:
+                          formData.ritualMarker === marker
+                            ? '#e3f2fd'
+                            : 'white',
+                        cursor: 'pointer',
                       }}
                     >
                       {marker}
@@ -318,11 +396,20 @@ function WalletManager({ wallets, onUpdateWallet }) {
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <label
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    cursor: 'pointer',
+                  }}
+                >
                   <input
                     type="checkbox"
                     checked={formData.verified}
-                    onChange={(e) => handleInputChange('verified', e.target.checked)}
+                    onChange={(e) =>
+                      handleInputChange('verified', e.target.checked)
+                    }
                   />
                   <span>Verified Òrìṣà Connection</span>
                 </label>
@@ -336,24 +423,40 @@ function WalletManager({ wallets, onUpdateWallet }) {
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
                 }}
               >
                 Save Changes
               </button>
             </div>
           ) : (
-            <div style={{ textAlign: 'center', color: '#666', padding: '2rem' }}>
-              Select a wallet to manage Òrìṣà connections, tags, notes, and ritual markers
+            <div
+              style={{ textAlign: 'center', color: '#666', padding: '2rem' }}
+            >
+              Select a wallet to manage Òrìṣà connections, tags, notes, and
+              ritual markers
             </div>
           )}
         </div>
       </div>
 
       {/* Legend */}
-      <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#f8f9fa', borderRadius: '4px' }}>
+      <div
+        style={{
+          marginTop: '2rem',
+          padding: '1rem',
+          backgroundColor: '#f8f9fa',
+          borderRadius: '4px',
+        }}
+      >
         <h4>Òrìṣà Ritual Markers & Associations</h4>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.5rem' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '0.5rem',
+          }}
+        >
           <div>⚡ Ṣàngó - Energy, Thunder, Justice</div>
           <div>🌊 Ọ̀ṣun/Yemoja - Flow, Water, Fertility</div>
           <div>🔥 Ṣàngó - Fire, Passion, Transformation</div>

@@ -6,7 +6,7 @@ Chart.register(ArcElement, Tooltip, Legend);
 
 function getExpenseBreakdown(transactions) {
   const breakdown = {};
-  transactions.forEach(t => {
+  transactions.forEach((t) => {
     if (t.type === 'expense') {
       breakdown[t.category] = (breakdown[t.category] || 0) + t.amount;
     }
@@ -22,11 +22,16 @@ const ExpenseBreakdownChart = ({ transactions }) => {
       {
         data: Object.values(breakdown),
         backgroundColor: [
-          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56',
+          '#4BC0C0',
+          '#9966FF',
+          '#FF9F40',
         ],
-        hoverOffset: 4
-      }
-    ]
+        hoverOffset: 4,
+      },
+    ],
   };
 
   return (

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useMempoolStore } from "../state/mempoolStore";
+import { useEffect, useState } from 'react';
+import { useMempoolStore } from '../state/mempoolStore';
 
 export function useMempool() {
   const [mempoolBlocks, setMempoolBlocks] = useState(null);
@@ -9,16 +9,16 @@ export function useMempool() {
   const store = useMempoolStore();
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3001/mempool");
+    const ws = new WebSocket('ws://localhost:3001/mempool');
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      if (data["mempool-blocks"]) {
-        setMempoolBlocks(data["mempool-blocks"]);
+      if (data['mempool-blocks']) {
+        setMempoolBlocks(data['mempool-blocks']);
 
         // Store blocks in Zustand store
-        data["mempool-blocks"].forEach(block => {
+        data['mempool-blocks'].forEach((block) => {
           store.addBlock(block);
         });
       }
@@ -50,7 +50,7 @@ export function useMempool() {
     getRecentBlocks: store.getRecentBlocks,
     getActiveAlerts: store.getActiveAlerts,
     getLatestSignal: store.getLatestSignal,
-    clearAlerts: store.clearAlerts
+    clearAlerts: store.clearAlerts,
   };
 }
 

@@ -12,11 +12,11 @@ const LitecoinMempoolTransactions = () => {
     const fetchTxs = () => {
       setLoading(true);
       fetch(TX_API_URL)
-        .then(res => {
+        .then((res) => {
           if (!res.ok) throw new Error('Network response was not ok');
           return res.json();
         })
-        .then(data => {
+        .then((data) => {
           if (!mounted) return;
           setTxs(data);
           setError(null);
@@ -42,9 +42,22 @@ const LitecoinMempoolTransactions = () => {
   if (!txs || !txs.length) return <div>No transactions found.</div>;
 
   return (
-    <div style={{ margin: '2rem 0', padding: '1rem', border: '1px solid #eee', borderRadius: '8px' }}>
+    <div
+      style={{
+        margin: '2rem 0',
+        padding: '1rem',
+        border: '1px solid #eee',
+        borderRadius: '8px',
+      }}
+    >
       <h3>Litecoin Mempool Transactions</h3>
-      <table style={{ width: '100%', fontSize: '0.95rem', borderCollapse: 'collapse' }}>
+      <table
+        style={{
+          width: '100%',
+          fontSize: '0.95rem',
+          borderCollapse: 'collapse',
+        }}
+      >
         <thead>
           <tr>
             <th style={{ textAlign: 'left' }}>Txid</th>
@@ -54,12 +67,16 @@ const LitecoinMempoolTransactions = () => {
           </tr>
         </thead>
         <tbody>
-          {txs.slice(0, 50).map(tx => (
+          {txs.slice(0, 50).map((tx) => (
             <tr key={tx.txid}>
               <td style={{ wordBreak: 'break-all' }}>{tx.txid}</td>
               <td>{tx.fee}</td>
               <td>{tx.vsize}</td>
-              <td>{tx.firstSeen ? new Date(tx.firstSeen * 1000).toLocaleString() : '—'}</td>
+              <td>
+                {tx.firstSeen
+                  ? new Date(tx.firstSeen * 1000).toLocaleString()
+                  : '—'}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -70,4 +87,3 @@ const LitecoinMempoolTransactions = () => {
 };
 
 export default LitecoinMempoolTransactions;
-

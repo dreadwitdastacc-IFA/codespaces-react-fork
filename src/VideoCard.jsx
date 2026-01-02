@@ -1,6 +1,6 @@
-import React, { useState, memo } from "react";
-import PropTypes from "prop-types";
-import "./VideoCard.css";
+import React, { useState, memo } from 'react';
+import PropTypes from 'prop-types';
+import './VideoCard.css';
 
 function LikeButton({ initialLiked = false, onToggle, ariaLabel }) {
   const [liked, setLiked] = useState(!!initialLiked);
@@ -14,13 +14,13 @@ function LikeButton({ initialLiked = false, onToggle, ariaLabel }) {
   return (
     <button
       type="button"
-      className={`vc-like-button ${liked ? "liked" : ""}`}
+      className={`vc-like-button ${liked ? 'liked' : ''}`}
       aria-pressed={liked}
-      aria-label={ariaLabel || "Like video"}
+      aria-label={ariaLabel || 'Like video'}
       onClick={handleClick}
     >
       <span className="vc-like-icon" aria-hidden="true">
-        {liked ? "💖" : "🤍"}
+        {liked ? '💖' : '🤍'}
       </span>
     </button>
   );
@@ -47,7 +47,7 @@ export function VideoCard({ video }) {
         <div className="video-card__thumb">
           <img
             className="video-card__img"
-            src={thumbnail || ""}
+            src={thumbnail || ''}
             alt={`Thumbnail of ${title}`}
             loading="lazy"
           />

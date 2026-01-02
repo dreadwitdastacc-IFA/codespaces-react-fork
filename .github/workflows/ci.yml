@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, Dreadwitdastacc-Ifawole, feat/testcontainers-cloud-check ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, Dreadwitdastacc-Ifawole ]
 
 jobs:
   test:
@@ -17,5 +17,11 @@ jobs:
           node-version: '18'
       - name: Install
         run: npm ci
+      - name: Lint code
+        run: npm run lint:check
+      - name: Check formatting
+        run: npm run format:check
       - name: Run tests
         run: npx vitest run --reporter dot
+      - name: Build
+        run: npm run build

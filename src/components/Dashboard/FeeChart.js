@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function FeeChart({ stats }) {
   if (!stats || !stats.feeHistogram) return <div>No fee data yet.</div>;
@@ -9,7 +9,7 @@ export default function FeeChart({ stats }) {
   return (
     <div>
       <h3>Fee Histogram</h3>
-      <div style={{ display: "flex", alignItems: "flex-end", height: 150 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', height: 150 }}>
         {histogram.map(([feeRate, vsize]) => {
           const height = (vsize / maxVsize) * 100;
           return (
@@ -19,7 +19,7 @@ export default function FeeChart({ stats }) {
               style={{
                 width: 4,
                 marginRight: 1,
-                background: "#fbbf24",
+                background: '#fbbf24',
                 height: `${height}%`,
               }}
             />

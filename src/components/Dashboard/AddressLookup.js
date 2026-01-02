@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 export default function AddressLookup() {
-  const [address, setAddress] = useState("");
-  const [network, setNetwork] = useState("bitcoin");
+  const [address, setAddress] = useState('');
+  const [network, setNetwork] = useState('bitcoin');
 
   const getExplorerUrl = (addr, net) => {
-    if (net === "bitcoin") {
+    if (net === 'bitcoin') {
       return `https://mempool.space/address/${addr}`;
-    } else if (net === "ethereum") {
+    } else if (net === 'ethereum') {
       return `https://etherscan.io/address/${addr}`;
-    } else if (net === "polygon") {
+    } else if (net === 'polygon') {
       return `https://polygonscan.com/address/${addr}`;
-    } else if (net === "bsc") {
+    } else if (net === 'bsc') {
       return `https://bscscan.com/address/${addr}`;
     }
     return `https://blockscan.com/address/${addr}`;
@@ -31,7 +31,14 @@ export default function AddressLookup() {
   };
 
   return (
-    <div style={{ padding: 20, border: '1px solid #ccc', borderRadius: 8, margin: 10 }}>
+    <div
+      style={{
+        padding: 20,
+        border: '1px solid #ccc',
+        borderRadius: 8,
+        margin: 10,
+      }}
+    >
       <h3>Blockchain Address Lookup</h3>
 
       <div style={{ marginBottom: 10 }}>
@@ -60,7 +67,7 @@ export default function AddressLookup() {
             width: '100%',
             padding: 8,
             fontFamily: 'monospace',
-            fontSize: 14
+            fontSize: 14,
           }}
         />
       </div>
@@ -74,7 +81,7 @@ export default function AddressLookup() {
           color: 'white',
           border: 'none',
           borderRadius: 4,
-          cursor: address.trim() ? 'pointer' : 'not-allowed'
+          cursor: address.trim() ? 'pointer' : 'not-allowed',
         }}
       >
         Lookup Address

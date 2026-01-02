@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   fetchETH,
   fetchTransactionsETH,
@@ -6,8 +6,8 @@ import {
   fetchSOL,
   fetchTransactionsSOL,
   fetchBTC,
-  fetchBlockscan
-} from "../services/blockchainAPI";
+  fetchBlockscan,
+} from '../services/blockchainAPI';
 
 export default function MultiChainDashboard() {
   const [ethData, setEthData] = useState(null);
@@ -17,11 +17,11 @@ export default function MultiChainDashboard() {
   const [loading, setLoading] = useState(false);
 
   const wallets = {
-    primary: "0xYourMainWallet",
-    treasury: "0xYourBusinessWallet",
-    ritual: "0xYourSymbolicWallet",
-    solana: "YourSolanaAddress",
-    btc: "YourBTCAddress"
+    primary: '0xYourMainWallet',
+    treasury: '0xYourBusinessWallet',
+    ritual: '0xYourSymbolicWallet',
+    solana: 'YourSolanaAddress',
+    btc: 'YourBTCAddress',
   };
 
   const loadAllData = async () => {
@@ -31,7 +31,7 @@ export default function MultiChainDashboard() {
       const [ethBalance, ethTx, gas] = await Promise.all([
         fetchETH(wallets.primary),
         fetchTransactionsETH(wallets.primary, 5),
-        fetchGasPriceETH()
+        fetchGasPriceETH(),
       ]);
 
       setEthData({ balance: ethBalance, transactions: ethTx });
@@ -40,7 +40,7 @@ export default function MultiChainDashboard() {
       // Load Solana data
       const [solBalance, solTx] = await Promise.all([
         fetchSOL(wallets.solana),
-        fetchTransactionsSOL(wallets.solana, 5)
+        fetchTransactionsSOL(wallets.solana, 5),
       ]);
 
       setSolData({ balance: solBalance, transactions: solTx });
@@ -48,7 +48,6 @@ export default function MultiChainDashboard() {
       // Load Bitcoin data
       const btcBalance = await fetchBTC(wallets.btc);
       setBtcData(btcBalance);
-
     } catch (error) {
       console.error('Error loading multi-chain data:', error);
     } finally {
@@ -87,20 +86,26 @@ export default function MultiChainDashboard() {
           border: 'none',
           borderRadius: 4,
           cursor: loading ? 'not-allowed' : 'pointer',
-          marginBottom: 20
+          marginBottom: 20,
         }}
       >
         {loading ? 'Loading...' : 'Refresh Data'}
       </button>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
-
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: 20,
+        }}
+      >
         {/* Ethereum Section */}
         <div style={{ border: '1px solid #ddd', borderRadius: 8, padding: 15 }}>
           <h3>🌐 Ethereum</h3>
           {ethData?.balance && (
             <div>
-              <strong>Balance:</strong> {formatBalance(ethData.balance.result)} ETH
+              <strong>Balance:</strong> {formatBalance(ethData.balance.result)}{' '}
+              ETH
             </div>
           )}
           {gasPrice?.result && (
@@ -116,8 +121,18 @@ export default function MultiChainDashboard() {
               <strong>Recent Transactions:</strong>
               <div style={{ maxHeight: 150, overflowY: 'auto', marginTop: 5 }}>
                 {ethData.transactions.result.slice(0, 3).map((tx, idx) => (
-                  <div key={idx} style={{ fontSize: 12, marginBottom: 5, padding: 5, backgroundColor: '#f8f9fa', borderRadius: 3 }}>
-                    {formatTimestamp(tx.timeStamp)} - {formatBalance(tx.value)} ETH
+                  <div
+                    key={idx}
+                    style={{
+                      fontSize: 12,
+                      marginBottom: 5,
+                      padding: 5,
+                      backgroundColor: '#f8f9fa',
+                      borderRadius: 3,
+                    }}
+                  >
+                    {formatTimestamp(tx.timeStamp)} - {formatBalance(tx.value)}{' '}
+                    ETH
                   </div>
                 ))}
               </div>
@@ -130,7 +145,8 @@ export default function MultiChainDashboard() {
           <h3>☀️ Solana</h3>
           {solData?.balance && (
             <div>
-              <strong>Balance:</strong> {(solData.balance.lamports / 1000000000).toFixed(4)} SOL
+              <strong>Balance:</strong>{' '}
+              {(solData.balance.lamports / 1000000000).toFixed(4)} SOL
             </div>
           )}
           {solData?.transactions && Array.isArray(solData.transactions) && (
@@ -138,8 +154,18 @@ export default function MultiChainDashboard() {
               <strong>Recent Transactions:</strong>
               <div style={{ maxHeight: 150, overflowY: 'auto', marginTop: 5 }}>
                 {solData.transactions.slice(0, 3).map((tx, idx) => (
-                  <div key={idx} style={{ fontSize: 12, marginBottom: 5, padding: 5, backgroundColor: '#f8f9fa', borderRadius: 3 }}>
-                    {new Date(tx.blockTime * 1000).toLocaleString()} - {tx.txHash?.slice(0, 8)}...
+                  <div
+                    key={idx}
+                    style={{
+                      fontSize: 12,
+                      marginBottom: 5,
+                      padding: 5,
+                      backgroundColor: '#f8f9fa',
+                      borderRadius: 3,
+                    }}
+                  >
+                    {new Date(tx.blockTime * 1000).toLocaleString()} -{' '}
+                    {tx.txHash?.slice(0, 8)}...
                   </div>
                 ))}
               </div>
@@ -152,12 +178,20 @@ export default function MultiChainDashboard() {
           <h3>₿ Bitcoin</h3>
           {btcData && (
             <div>
-              <div><strong>Balance:</strong> {btcData.chain_stats?.funded_txo_sum ? (btcData.chain_stats.funded_txo_sum / 100000000).toFixed(8) : '0'} BTC</div>
-              <div><strong>Transactions:</strong> {btcData.chain_stats?.tx_count || 0}</div>
+              <div>
+                <strong>Balance:</strong>{' '}
+                {btcData.chain_stats?.funded_txo_sum
+                  ? (btcData.chain_stats.funded_txo_sum / 100000000).toFixed(8)
+                  : '0'}{' '}
+                BTC
+              </div>
+              <div>
+                <strong>Transactions:</strong>{' '}
+                {btcData.chain_stats?.tx_count || 0}
+              </div>
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

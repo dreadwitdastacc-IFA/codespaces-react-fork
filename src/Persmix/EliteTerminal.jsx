@@ -1,37 +1,37 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./Persmix.css";
+import React, { useState, useEffect, useRef } from 'react';
+import './Persmix.css';
 
 const COMMON_COMMANDS = [
-  "ls",
-  "cd",
-  "pwd",
-  "mkdir",
-  "rm",
-  "cp",
-  "mv",
-  "cat",
-  "grep",
-  "find",
-  "ps",
-  "top",
-  "kill",
-  "chmod",
-  "chown",
-  "df",
-  "du",
-  "free",
-  "uptime",
-  "npm start",
-  "npm test",
-  "npm run build",
-  "git status",
-  "git add",
-  "git commit",
-  "git push",
+  'ls',
+  'cd',
+  'pwd',
+  'mkdir',
+  'rm',
+  'cp',
+  'mv',
+  'cat',
+  'grep',
+  'find',
+  'ps',
+  'top',
+  'kill',
+  'chmod',
+  'chown',
+  'df',
+  'du',
+  'free',
+  'uptime',
+  'npm start',
+  'npm test',
+  'npm run build',
+  'git status',
+  'git add',
+  'git commit',
+  'git push',
 ];
 
 function EliteTerminal({ onCommand }) {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [history, setHistory] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState(-1);
@@ -42,7 +42,9 @@ function EliteTerminal({ onCommand }) {
   useEffect(() => {
     try {
       // Skip loading persisted history while running tests to avoid cross-test leakage
-      const isTest = (import.meta && import.meta.env && import.meta.env.VITEST) || globalThis?.vitest;
+      const isTest =
+        (import.meta && import.meta.env && import.meta.env.VITEST) ||
+        globalThis?.vitest;
       if (!isTest) {
         const saved = localStorage.getItem('elite_terminal_history');
         if (saved) setHistory(JSON.parse(saved));
@@ -55,7 +57,9 @@ function EliteTerminal({ onCommand }) {
   // persist history to localStorage
   useEffect(() => {
     try {
-      const isTest = (import.meta && import.meta.env && import.meta.env.VITEST) || globalThis?.vitest;
+      const isTest =
+        (import.meta && import.meta.env && import.meta.env.VITEST) ||
+        globalThis?.vitest;
       // Avoid persisting during tests
       if (!isTest) {
         localStorage.setItem('elite_terminal_history', JSON.stringify(history));
@@ -65,15 +69,17 @@ function EliteTerminal({ onCommand }) {
     }
   }, [history]);
 
-    useEffect(() => {
-      // Avoid focusing during tests which can trigger act() warnings
-      const isTest = (import.meta && import.meta.env && import.meta.env.VITEST) || globalThis?.vitest;
-      if (!isTest) {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+  useEffect(() => {
+    // Avoid focusing during tests which can trigger act() warnings
+    const isTest =
+      (import.meta && import.meta.env && import.meta.env.VITEST) ||
+      globalThis?.vitest;
+    if (!isTest) {
+      if (inputRef.current) {
+        inputRef.current.focus();
       }
-    }, []);
+    }
+  }, []);
 
   const updateSuggestions = (value) => {
     if (!value) {
@@ -97,15 +103,15 @@ function EliteTerminal({ onCommand }) {
   };
 
   const handleKeyDown = async (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       if (input.trim()) {
         setHistory((prev) => [...prev, input.trim()]);
         onCommand(input.trim());
-        setInput("");
+        setInput('');
         setSuggestions([]);
         setHistoryIndex(-1);
       }
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (history.length > 0) {
         const newIndex =
@@ -116,7 +122,7 @@ function EliteTerminal({ onCommand }) {
         setInput(history[newIndex]);
         updateSuggestions(history[newIndex]);
       }
-    } else if (e.key === "ArrowDown") {
+    } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (historyIndex >= 0) {
         const newIndex = historyIndex + 1;
@@ -126,11 +132,11 @@ function EliteTerminal({ onCommand }) {
           updateSuggestions(history[newIndex]);
         } else {
           setHistoryIndex(-1);
-          setInput("");
+          setInput('');
           setSuggestions([]);
         }
       }
-    } else if (e.key === "Tab") {
+    } else if (e.key === 'Tab') {
       e.preventDefault();
       if (suggestions.length > 0) {
         const nextIndex =
@@ -140,7 +146,7 @@ function EliteTerminal({ onCommand }) {
         setSelectedSuggestion(nextIndex);
         setInput(suggestions[nextIndex]);
       }
-    } else if (e.key === "Escape") {
+    } else if (e.key === 'Escape') {
       setSuggestions([]);
       setSelectedSuggestion(-1);
     }
@@ -172,7 +178,9 @@ function EliteTerminal({ onCommand }) {
           aria-autocomplete="list"
           aria-controls="terminal-suggestions"
           aria-activedescendant={
-            selectedSuggestion >= 0 ? `suggestion-${selectedSuggestion}` : undefined
+            selectedSuggestion >= 0
+              ? `suggestion-${selectedSuggestion}`
+              : undefined
           }
           ref={inputRef}
           type="text"
@@ -184,13 +192,17 @@ function EliteTerminal({ onCommand }) {
         />
       </div>
       {suggestions.length > 0 && (
-        <div id="terminal-suggestions" role="listbox" className="suggestions-list">
+        <div
+          id="terminal-suggestions"
+          role="listbox"
+          className="suggestions-list"
+        >
           {suggestions.map((suggestion, idx) => (
             <div
               id={`suggestion-${idx}`}
               role="option"
               key={idx}
-              className={`suggestion-item ${idx === selectedSuggestion ? "selected" : ""}`}
+              className={`suggestion-item ${idx === selectedSuggestion ? 'selected' : ''}`}
               onClick={() => handleSuggestionClick(suggestion)}
               aria-selected={idx === selectedSuggestion}
             >

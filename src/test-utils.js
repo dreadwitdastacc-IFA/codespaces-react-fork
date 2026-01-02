@@ -17,11 +17,7 @@ export const renderWithProviders = (ui, options = {}) => {
 
   // Add any providers here if needed (e.g., Router, Theme, etc.)
   const Wrapper = ({ children }) => {
-    return (
-      <React.Fragment>
-        {children}
-      </React.Fragment>
-    );
+    return <React.Fragment>{children}</React.Fragment>;
   };
 
   return render(ui, { wrapper: Wrapper, ...renderOptions });

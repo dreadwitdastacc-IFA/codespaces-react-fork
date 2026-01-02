@@ -1,6 +1,6 @@
-import { fetchETH } from "./chains/eth.js";
-import { fetchSOL } from "./chains/sol.js";
-import { fetchBNB } from "./chains/bnb.js";
+import { fetchETH } from './chains/eth.js';
+import { fetchSOL } from './chains/sol.js';
+import { fetchBNB } from './chains/bnb.js';
 
 export async function fetchMultichain(addresses) {
   return {

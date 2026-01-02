@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function AlertsPanel({ alerts }) {
   if (!alerts || !alerts.length) return <div>No alerts yet.</div>;
