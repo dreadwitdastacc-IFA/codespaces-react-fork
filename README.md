@@ -77,5 +77,16 @@ This section has moved here: [https://vitejs.dev/guide/build.html](https://vitej
 
 This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](https://vitejs.dev/guide/troubleshooting.html)
 
+### Network and Firewall Issues
+
+If you're experiencing connectivity issues or seeing "API unreachable" warnings, see [NETWORK_TROUBLESHOOTING.md](./NETWORK_TROUBLESHOOTING.md) for detailed guidance on resolving firewall and network-related problems.
+
+**Common issues:**
+- External APIs (CoinGecko, Mempool.space) blocked by corporate firewall
+- CORS errors
+- Network security policies preventing API access
+
+The application includes fallback data for when APIs are unreachable, so it will continue to function (with cached/sample data) even when blocked by firewall rules.
+
 
 [definitionLink]: https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf
