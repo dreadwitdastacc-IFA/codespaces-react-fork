@@ -3,12 +3,14 @@ name: Docker Build and Push
 on:
   push:
     branches:
+      - Dreadwitdastacc-Ifawole
       - main
       - copilot/**
     tags:
       - 'v*'
   pull_request:
     branches:
+      - Dreadwitdastacc-Ifawole
       - main
   workflow_dispatch:
 
