@@ -10,6 +10,16 @@ is_command() {
   command -v "$1" >/dev/null
 }
 
+min() {
+  a=$1
+  b=$2
+  if [ "$a" -lt "$b" ]; then
+    echo "$a"
+  else
+    echo "$b"
+  fi
+}
+
 if [ -z "${NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE}" ]; then
   return 0
 fi
@@ -181,8 +191,9 @@ ncpu_quota_v2=
 ncpu=0
 cpuset=
 cgroup_v1=
-cgroup_v2=$( get_cgroup_v2_path ) && ncpu_cpuset_v2=$( get_cpuset "$cgroup_v2" "cpuset.cpus.effective" ) || ncpu_cpuset_v2=$ncpu_online
+cgroup_v2=$( get_cgroup_v2_path )
 if [ -n "$cgroup_v2" ]; then
+  ncpu_cpuset_v2=$( get_cpuset "$cgroup_v2" "cpuset.cpus.effective" ) || ncpu_cpuset_v2=$ncpu_online
   ncpu_quota_v2=$( get_quota_v2 "$cgroup_v2" ) || ncpu_quota_v2=$ncpu_online
   ncpu=$( min "$ncpu_cpuset_v2" "$ncpu_quota_v2" )
 else
