@@ -1,300 +1,245 @@
-import React, { Suspense, useEffect } from 'react';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import "./App.css";
+import ProfitLossSummary from "./ProfitLossSummary";
+import ExpenseBreakdown from "./ExpenseBreakdown";
+import ReportGenerator from "./ReportGenerator";
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: null,
-      errorInfo: null,
-      errorId: null
-    };
-  }
+import ExpenseBreakdownChart from "./ExpenseBreakdownChart";
 
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
+import LitecoinPriceBot from "./LitecoinPriceBot";
 
-  componentDidCatch(error, errorInfo) {
-    const errorId = `error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+import LitecoinMempoolTransactions from "./LitecoinMempoolTransactions";
+import LitecoinMempoolDashboard from "./LitecoinMempoolDashboard";
+import VideoCard from "./VideoCard";
 
-    this.setState({
-      errorInfo,
-      errorId
-    });
+import defaultTransactions from "./data/transactions";
+import Persmix, {
+  PersmixOpenAIChat,
+  EliteTerminal,
+  SystemStatus,
+} from "./Persmix";
+import cosmosService from "./services/cosmosService";
 
-    // Enhanced error logging
-    console.error('ErrorBoundary caught an error:', {
-      error: error.toString(),
-      stack: error.stack,
-      componentStack: errorInfo.componentStack,
-      errorId,
-      timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent,
-      url: window.location.href
-    });
+function App({ initialTransactions = defaultTransactions }) {
+  const [transactions, setTransactions] = useState(initialTransactions);
+  const [walletType, setWalletType] = useState("litecoin");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [etherscanKey, setEtherscanKey] = useState("");
+  const [customApi, setCustomApi] = useState("");
+  const [syncStatus, setSyncStatus] = useState("idle");
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [cloudError, setCloudError] = useState(null);
 
-    // In a real app, you might send this to an error reporting service
-    // Example: sendErrorToService(error, errorInfo, errorId);
-  }
-
-  handleRetry = () => {
-    this.setState({
-      hasError: false,
-      error: null,
-      errorInfo: null,
-      errorId: null
-    });
-  };
-
-  handleReportError = () => {
-    const { error, errorInfo, errorId } = this.state;
-    const reportData = {
-      errorId,
-      message: error.toString(),
-      stack: error.stack,
-      componentStack: errorInfo?.componentStack,
-      timestamp: new Date().toISOString(),
-      url: window.location.href,
-      userAgent: navigator.userAgent
-    };
-
-    // Copy error details to clipboard
-    navigator.clipboard.writeText(JSON.stringify(reportData, null, 2))
-      .then(() => alert('Error details copied to clipboard. Please share with support.'))
-      .catch(() => alert('Failed to copy error details. Please manually copy from console.'));
-  };
-
-  render() {
-    if (this.state.hasError) {
-      const { error, errorInfo, errorId } = this.state;
-
-      return (
-        <div role="alert" style={{
-          padding: '2rem',
-          margin: '1rem 0',
-          border: '1px solid #ff6b6b',
-          borderRadius: '8px',
-          backgroundColor: '#fff5f5',
-          color: '#c92a2a'
-        }}>
-          <h3 style={{ margin: '0 0 1rem 0', color: '#c92a2a' }}>
-            🚨 Something went wrong
-          </h3>
-
-          <p style={{ margin: '0 0 1rem 0' }}>
-            This part of the application encountered an error. You can try reloading or contact support.
-          </p>
-
-          {process.env.NODE_ENV === 'development' && (
-            <details style={{ margin: '1rem 0' }}>
-              <summary style={{ cursor: 'pointer', fontWeight: 'bold' }}>
-                Error Details (Development Only)
-              </summary>
-              <div style={{
-                marginTop: '1rem',
-                padding: '1rem',
-                backgroundColor: '#f8f9fa',
-                border: '1px solid #dee2e6',
-                borderRadius: '4px',
-                fontFamily: 'monospace',
-                fontSize: '0.875rem',
-                overflow: 'auto',
-                maxHeight: '200px'
-              }}>
-                <strong>Error ID:</strong> {errorId}<br/>
-                <strong>Message:</strong> {error.toString()}<br/>
-                <strong>Stack:</strong><br/>
-                <pre style={{ whiteSpace: 'pre-wrap', margin: '0.5rem 0' }}>
-                  {error.stack}
-                </pre>
-                {errorInfo?.componentStack && (
-                  <>
-                    <strong>Component Stack:</strong><br/>
-                    <pre style={{ whiteSpace: 'pre-wrap', margin: '0.5rem 0' }}>
-                      {errorInfo.componentStack}
-                    </pre>
-                  </>
-                )}
-              </div>
-            </details>
-          )}
-
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <button
-              onClick={this.handleRetry}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: '#51cf66',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              🔄 Try Again
-            </button>
-
-            <button
-              onClick={() => window.location.reload()}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: '#74c0fc',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              🔄 Reload Page
-            </button>
-
-            <button
-              onClick={this.handleReportError}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: '#ffd43b',
-                color: '#212529',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              📋 Copy Error Details
-            </button>
-          </div>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-
-const ProfitLossSummary = React.lazy(() => import('./ProfitLossSummary'));
-const ExpenseBreakdown = React.lazy(() => import('./ExpenseBreakdown'));
-const ReportGenerator = React.lazy(() => import('./ReportGenerator'));
-const ExpenseBreakdownChart = React.lazy(() => import('./ExpenseBreakdownChart'));
-const LitecoinPriceBot = React.lazy(() => import('./LitecoinPriceBot'));
-const LitecoinMempoolTransactions = React.lazy(() => import('./LitecoinMempoolTransactions'));
-
-const transactions = [
-  { type: 'income', category: 'sales', amount: 1200 },
-  { type: 'expense', category: 'marketing', amount: 300 },
-  { type: 'expense', category: 'operations', amount: 150 },
-  { type: 'income', category: 'services', amount: 800 },
-  { type: 'expense', category: 'development', amount: 400 },
-];
-
-function App() {
+  // Initialize Cosmos DB and load transactions
   useEffect(() => {
-    const onPreloadError = () => {
-      window.location.reload();
+    const loadTransactions = async () => {
+      try {
+        await cosmosService.init();
+        const cosmosTransactions = await cosmosService.getTransactions();
+        if (cosmosTransactions.length > 0) {
+          setTransactions(cosmosTransactions);
+        }
+      } catch (error) {
+        console.error('Failed to load from Cosmos DB:', error);
+        // Fallback to localStorage
+        const saved = localStorage.getItem("transactions");
+        if (saved) {
+          setTransactions(JSON.parse(saved));
+        }
+      }
     };
+    loadTransactions();
+  }, []);
 
-    window.addEventListener('vite:preloadError', onPreloadError);
-    return () => window.removeEventListener('vite:preloadError', onPreloadError);
+  // Sync to Cosmos DB and localStorage
+  useEffect(() => {
+    const syncTransactions = async () => {
+      try {
+        setSyncStatus("syncing");
+        // For simplicity, replace all; in real app, diff
+        // But since small, delete all and add new
+        const existing = await cosmosService.getTransactions();
+        for (const tx of existing) {
+          await cosmosService.deleteTransaction(tx.id, tx.type);
+        }
+        for (const tx of transactions) {
+          await cosmosService.addTransaction(tx);
+        }
+        setSyncStatus("synced");
+        setCloudError(null);
+      } catch (error) {
+        setSyncStatus("error");
+        setCloudError(error.message);
+      }
+    };
+    if (transactions !== initialTransactions) {
+      syncTransactions();
+    }
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
+
+  // Online/offline detection
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
   }, []);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src="/Octocat.png" className="App-logo" alt="Octocat logo" />
-        <h1> dreadwitdastacc-IFA</h1>
-        <p className="tagline" style={{ fontSize: '1.2rem', margin: '1rem 0', fontWeight: '300' }}>
-          Advanced Cryptocurrency Mining & Farming Platform
-        </p>
-        <p className="small">
-          Track Litecoin mempool transactions, monitor mining profitability, and optimize your crypto farming operations with real-time data and powerful analytics.
-        </p>
-        <p>
+      <div
+        style={{
+          background: isOnline ? "#e0ffe0" : "#ffe0e0",
+          padding: "0.5rem",
+          textAlign: "center",
+        }}
+      >
+        {isOnline ? "Online" : "Offline"} | Sync: {syncStatus}
+        {cloudError && (
+          <span style={{ color: "red", marginLeft: 8 }}>{cloudError}</span>
+        )}
+      </div>
+      <header className="App-header" role="banner">
+        <div className="App-brand">
+          <img
+            src="/logo192.png"
+            className="App-logo"
+            alt="dreadwitdastacc-IFA logo"
+          />
+          <div>
+            <h1 className="sr-only">dreadwitdastacc-IFA</h1>
+            <p aria-hidden="true">dreadwitdastacc-IFA</p>
+            <p
+              className="tagline"
+              style={{
+                fontSize: "1.2rem",
+                margin: "1rem 0",
+                fontWeight: "300",
+              }}
+            >
+              Advanced Cryptocurrency Mining & Farming Platform
+            </p>
+          </div>
+        </div>
+        <nav
+          aria-label="Primary"
+          className="App-nav"
+          style={{ marginTop: "0.5rem" }}
+        >
+          <a href="/" style={{ marginRight: "1rem" }}>
+            Web App
+          </a>
+          <a href="/manifest.json" target="_blank" rel="noopener noreferrer">
+            Mobile / PWA
+          </a>
           <a
             className="App-link"
             href="https://reactjs.org"
             target="_blank"
             rel="noopener noreferrer"
+            style={{ marginLeft: "1rem" }}
           >
             Learn React
           </a>
+        </nav>
+        <p className="small" style={{ marginTop: "0.75rem" }}>
+          Track Litecoin mempool transactions, monitor mining profitability, and
+          optimize your crypto farming operations with real-time data and
+          powerful analytics.
         </p>
       </header>
-
-      <main style={{ padding: '2rem' }}>
-        <ErrorBoundary>
-          <Suspense fallback={
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '2rem',
-              backgroundColor: '#f8f9fa',
-              borderRadius: '8px',
-              margin: '1rem 0'
-            }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  border: '4px solid #e9ecef',
-                  borderTop: '4px solid #51cf66',
-                  borderRadius: '50%',
-                  animation: 'spin 1s linear infinite',
-                  margin: '0 auto 1rem'
-                }}></div>
-                <p style={{ margin: 0, color: '#6c757d' }}>Loading Litecoin tools…</p>
-              </div>
-              <style>{`
-                @keyframes spin {
-                  0% { transform: rotate(0deg); }
-                  100% { transform: rotate(360deg); }
-                }
-              `}</style>
-            </div>
-          }>
-            <LitecoinPriceBot />
-            <LitecoinMempoolTransactions />
-          </Suspense>
-        </ErrorBoundary>
-
-        <section aria-labelledby="analytics" style={{ marginTop: '2rem' }}>
-          <h2 id="analytics" style={{ fontSize: '1rem' }}>Analytics</h2>
-          <ErrorBoundary>
-            <Suspense fallback={
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2rem',
-                backgroundColor: '#f8f9fa',
-                borderRadius: '8px',
-                margin: '1rem 0'
-              }}>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{
-                    width: '40px',
-                    height: '40px',
-                    border: '4px solid #e9ecef',
-                    borderTop: '4px solid #74c0fc',
-                    borderRadius: '50%',
-                    animation: 'spin 1s linear infinite',
-                    margin: '0 auto 1rem'
-                  }}></div>
-                  <p style={{ margin: 0, color: '#6c757d' }}>Loading analytics…</p>
-                </div>
-              </div>
-            }>
-              <ProfitLossSummary transactions={transactions} />
-              <ExpenseBreakdownChart transactions={transactions} />
-              <ExpenseBreakdown transactions={transactions} />
-              <ReportGenerator transactions={transactions} />
-            </Suspense>
-          </ErrorBoundary>
+      <main style={{ padding: "2rem" }} role="main">
+        {/* Elite Wallet Loader UI */}
+        <section
+          style={{
+            marginBottom: "2.5rem",
+            borderRadius: 16,
+            boxShadow: "0 2px 16px #0001",
+            background: "#fff",
+            padding: 24,
+            maxWidth: 700,
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <h2
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              fontSize: 22,
+              fontWeight: 700,
+              marginBottom: 12,
+            }}
+          >
+            <span>🔗</span> Load Transactions from Wallet
+            <span
+              style={{
+                fontSize: 14,
+                fontWeight: 400,
+                marginLeft: 8,
+                color: "#888",
+              }}
+              title="Supports major blockchains and custom APIs"
+            >
+              (multi-chain, custom API)
+            </span>
+          </h2>
+          {/* ...existing wallet loader form code... */}
         </section>
+        {/* Featured video card (state-of-the-art UI preview) */}
+        <section aria-labelledby="featured-video">
+          <h2
+            id="featured-video"
+            style={{ fontSize: "1.125rem", marginBottom: "0.5rem" }}
+          >
+            Featured
+          </h2>
+          <div style={{ marginBottom: "2rem" }}>
+            <h3>Mini Short Live Performance Video</h3>
+            <video controls width="100%" />
+          </div>
+        </section>
+        {/* Persmix Elite Module */}
+        <Persmix
+          title="Persmix Elite Module"
+          description="Experience the next level of modular excellence."
+          features={[
+            "Ultra-fast rendering",
+            "Elite customization",
+            "Seamless integration",
+            "Cutting-edge design",
+          ]}
+        />
+        <PersmixOpenAIChat />
+        <EliteTerminal />
+        <SystemStatus />
       </main>
+      <footer>
+        <p>
+          I leverage GPT-5 and Claude-4 advanced agentic coding capabilities to
+          help you build, debug, and innovate faster.
+        </p>
+        <p>Edit Files | Commands | Browse | Explore | MCP Tools | Secure</p>
+      </footer>
     </div>
   );
 }
 
-export default App;
+App.propTypes = {
+  initialTransactions: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      category: PropTypes.string,
+      amount: PropTypes.number,
+    })
+  ),
+};
 
+export default App;

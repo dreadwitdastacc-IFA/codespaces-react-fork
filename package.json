@@ -2,18 +2,37 @@
   "name": "codespaces-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mywebsite.com",
   "license": "MIT",
+  "homepage": "https://mywebsite.com",
   "type": "module",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
+    "@azure-rest/ai-inference": "^1.0.0-beta.6",
+    "@azure/core-auth": "^1.10.1",
+    "@azure/cosmos": "^4.9.0",
+    "@microsoft/signalr": "^10.0.0",
+    "@storybook/addon-essentials": "^8.4.0",
+    "@storybook/addon-interactions": "^8.4.0",
+    "@storybook/addon-links": "^8.4.0",
+    "@storybook/blocks": "^8.4.0",
+    "@storybook/react": "^8.4.0",
+    "@storybook/react-vite": "^8.4.0",
+    "@storybook/test": "^8.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "chart.js": "^4.5.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^6.15.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^18.2.0",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+    "storybook": "^8.4.0",
     "web-vitals": "^3.1.0"
   },
   "overrides": {
@@ -25,7 +44,12 @@
     "start": "BROWSER=none WDS_SOCKET_PORT=0 vite --port 3000",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest",
+    "server": "node openai.js",
+    "test": "vitest --environment jsdom",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "emulator:run": "docker run -p 8081:8081 -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=1 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator",
+    "emulator:stop": "docker rm -f $(docker ps -q --filter ancestor=mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator) || true",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test",
@@ -64,5 +88,11 @@
     "playwright": "^1.40.0",
     "vite": "^6.3.6",
     "vitest": "^3.0.7"
+  }
+
+  ,"vitest": {
+    "test": {
+      "setupFiles": ["./src/setupTests.js"]
+    }
   }
 }

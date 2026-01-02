@@ -1,0 +1,171 @@
+name: Sentinel Pipeline – Orisa Aligned CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - "v*.*.*"
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  ogun_tests:
+    name: Ogun – Forge & Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source (Ogun enters the forge)
+        uses: actions/checkout@v4
+
+      - name: Set up Node (example – adjust to your stack)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies (Ogun sharpens tools)
+        run: npm ci
+
+      - name: Run tests (Ogun enforces integrity)
+        run: npm test
+
+  shango_build_and_push:
+    name: Ṣàngó – Build & Push Multi-Arch Image
+    needs: ogun_tests
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source (Ṣàngó observes the code)
+        uses: actions/checkout@v4
+
+      - name: Enable QEMU for multi-arch (Ọya stirs the winds)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Enable Docker Buildx (Ogun prepares the anvil)
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+
+      - name: Authenticate to GHCR (Ọ̀ṣun opens the river of flow)
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image tags (Ifá speaks version into being)
+        id: meta
+        run: |
+          REF="${GITHUB_REF}"
+          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          echo "base_image=${IMAGE}" >> "$GITHUB_OUTPUT"
+
+          # Default tags
+          TAGS="${IMAGE}:latest,${IMAGE}:${GITHUB_SHA}"
+
+          # Tag by branch name
+          if [[ "$REF" == refs/heads/* ]]; then
+            BRANCH="${REF#refs/heads/}"
+            SAFE_BRANCH=$(echo "$BRANCH" | tr '/' '-')
+            TAGS="${TAGS},${IMAGE}:branch-${SAFE_BRANCH}"
+          fi
+
+          # Tag by semver tag (v1.2.3)
+          if [[ "$REF" == refs/tags/v* ]]; then
+            VERSION="${REF#refs/tags/}"
+            TAGS="${TAGS},${IMAGE}:${VERSION}"
+            TAGS="${TAGS},${IMAGE}:stable"
+          fi
+
+          echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
+
+      - name: Build & Push (Ṣàngó’s lightning compiles form)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+          sbom: false
+
+  oya_security_scan:
+    name: Ọya – Security & Storm Check
+    needs: shango_build_and_push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source (Ọya reviews the crossroads)
+        uses: actions/checkout@v4
+
+      - name: Install Trivy (storm lanterns lit)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: image
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          vuln-type: os,library
+          format: sarif
+          output: trivy-results.sarif
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+      - name: Upload Trivy report (Ọya delivers the message)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+
+  orun_sign_image:
+    name: Ọ̀run – Sign Image (Optional Cosign)
+    needs: oya_security_scan
+    runs-on: ubuntu-latest
+    if: ${{ secrets.COSIGN_KEY != '' }}
+
+    steps:
+      - name: Install cosign (ancestral seal tools)
+        uses: sigstore/cosign-installer@v3.8.1
+        with:
+          cosign-release: "v2.4.0"
+
+      - name: Sign latest image with cosign (Ọ̀run seals the image)
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
+          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: |
+          echo "${COSIGN_KEY}" > cosign.key
+          cosign sign --key cosign.key "$IMAGE"
+
+  osun_deploy:
+    name: Ọ̀ṣun – Deployment & Flow
+    needs: [ orun_sign_image, oya_security_scan ]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Mark deployment start (Ọ̀ṣun opens the golden path)
+        run: |
+          echo "::notice title=Osun::Deployment flow beginning for $GITHUB_SHA"
+
+      # ⬇️ PLACEHOLDER: wire in your real deploy target here
+      # Examples: kubectl, helm, flyctl, render, ecs-deploy, etc.
+      - name: Placeholder – implement deployment
+        run: |
+          echo "No deployment target wired yet."
+          echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+
+      - name: Mark deployment complete (Ọ̀ṣun affirms delivery)
+        run: |
+          echo "::notice title=Osun::Deployment flow completed for $GITHUB_SHA"

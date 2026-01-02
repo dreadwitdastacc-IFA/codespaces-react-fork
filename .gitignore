@@ -82,6 +82,12 @@ typings/
 .nuxt
 dist
 
+# Storybook build output
+storybook-static/
+
+# Local builds
+/.vite
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and *not* Next.js

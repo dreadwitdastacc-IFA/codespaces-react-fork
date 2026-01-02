@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Repo Helper <noreply@example.com>
+Date: Sun, 28 Dec 2025 00:00:00 +0000
+Subject: [PATCH] sample: Add README note
+
+---
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/README.md b/README.md
+index e69de29..0000000 100644
+--- a/README.md
++++ b/README.md
+@@
+ +
+ +Sample patch placeholder
+-- 
+2.30.2
