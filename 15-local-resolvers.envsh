@@ -1,0 +1,30 @@
+#!/bin/sh
+# vim:sw=4:ts=4:et
+
+set -e
+
+ME=$(basename $0)
+NAMESERVER_OPTION="local="
+
+if [ ! -f "/etc/resolv.conf" ]; then
+    echo >&3 "$ME: info: /etc/resolv.conf is not a file or does not exist"
+    return 0
+fi
+
+# check if we are using a custom dns server
+if ! grep -q "^nameserver 127.0.0.11$" /etc/resolv.conf; then
+    echo >&3 "$ME: info: /etc/resolv.conf does not contain a custom nameserver (127.0.0.11), using default"
+    return 0
+fi
+
+NGINX_LOCAL_RESOLVERS=$(awk '$1 == "nameserver" {print ($2 ~ ":")? "["$2"]": $2}' /etc/resolv.conf | tr '\n' ' ')
+
+if [ -z "$NGINX_LOCAL_RESOLVERS" ]; then
+    echo >&3 "$ME: info: No resolvers found in /etc/resolv.conf, using default"
+    return 0
+fi
+
+export NGINX_LOCAL_RESOLVERS
+echo >&3 "$ME: info: Got the following resolvers from /etc/resolv.conf: $NGINX_LOCAL_RESOLVERS"
+
+return 0
