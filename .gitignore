@@ -82,6 +82,12 @@ typings/
 .nuxt
 dist
 
+# Storybook build output
+storybook-static/
+
+# Local builds
+/.vite
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and *not* Next.js
@@ -121,6 +127,11 @@ dist
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Vim swap files
+*.swp
+*.swo
+*~
 
 npm-debug.log*
 yarn-debug.log*

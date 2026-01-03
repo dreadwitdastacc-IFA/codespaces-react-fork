@@ -1,4 +1,11 @@
 {
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.allowForcePush": false,
+  "github.gitAuthentication": true
+}
+{
   "github.copilot.chat.codeGeneration.instructions": [
     {
       "file": ".copilot-codeGeneration-instructions.md"
@@ -6,5 +13,29 @@
   ],
   "inlineChat.enableV2": true,
   "inlineChat.finishOnType": true,
-  "inlineChat.lineEmptyHint": true
+  "inlineChat.lineEmptyHint": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "ms-vscode.remote-repositories",
+  "editor.wordWrap": "wordWrapColumn",
+  "workbench.editor.limit.enabled": false,
+  "workbench.editor.limit.value": 0,
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "remote.autoForwardPortsFallback": 0,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

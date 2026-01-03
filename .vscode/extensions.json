@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "GitHub.vscode-pull-request-github",
+    "GitHub.vscode-github-actions",
+    "eamodio.gitlens",
+    "storybook.storybook-vscode"
+  ]
+}
