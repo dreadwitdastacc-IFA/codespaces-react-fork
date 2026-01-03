@@ -6,15 +6,17 @@
   color: #fff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(2,6,23,0.6);
-  transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms;
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    box-shadow 220ms;
   padding: 8px;
 }
 
 .video-card:focus,
 .video-card:hover {
   transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 18px 40px rgba(2,6,23,0.7);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.7);
 }
 
 .video-card__link {
@@ -28,6 +30,3 @@
 /* find process using port 3000 */
 
 /* stop that process (example) */
-
-
-

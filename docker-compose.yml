@@ -10,6 +10,8 @@ services:
     environment:
       - NODE_ENV=production
       - REACT_APP_API_URL=http://backend:3001
+    labels:
+      com.datadoghq.ad.checks: '{"nginx": {"instances": [{"nginx_status_url": "http://%%host%%/nginx_status"}], "logs": [{"source": "nginx", "service": "web"}]}}'
     depends_on:
       - backend
       - image-service
@@ -26,6 +28,8 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
+    labels:
+      com.datadoghq.ad.checks: '{"process": {"instances": [{"name": "node", "search_string": ["node", "openai.js"]}], "logs": [{"source": "nodejs", "service": "backend"}]}}'
 
   image-service:
     build: ./docker/image-service
@@ -35,11 +39,34 @@ services:
     restart: unless-stopped
     environment:
       - FLASK_ENV=production
+    labels:
+      com.datadoghq.ad.checks: '{"process": {"instances": [{"name": "python", "search_string": ["python", "app.py"]}], "logs": [{"source": "python", "service": "image-service"}]}}'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 30s
       timeout: 5s
       retries: 3
+
+  datadog:
+    image: datadog/agent:latest
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_SITE=datadoghq.com
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+      - DD_APM_ENABLED=true
+      - DD_PROCESS_AGENT_ENABLED=true
+      - DD_LOGS_ENABLED=true
+      - DD_CONTAINER_LABELS_AS_TAGS=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+    ports:
+      - "8126:8126"  # APM
+      - "8125:8125/udp"  # DogStatsD
+    depends_on:
+      - web
+      - backend
 
 # Note: this compose file runs the frontend (nginx) on host port 3000
 # and the image-processing service on 5000. Adjust ports as needed.

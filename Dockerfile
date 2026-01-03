@@ -13,6 +13,8 @@ ENV NJS_RELEASE     1~trixie
 ENV PKG_RELEASE     1~trixie
 ENV DYNPKG_RELEASE  1~trixie
 
+# Install dependencies
+RUN npm install --legacy-peer-deps
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
     && groupadd --system --gid 101 nginx \
@@ -138,6 +140,19 @@ COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
 COPY 30-tune-worker-processes.sh /docker-entrypoint.d
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
+# Build the application
+RUN npm run build
+
+# Production stage
+FROM nginx:alpine
+
+# Copy built files from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy custom nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80
 EXPOSE 80
 
 STOPSIGNAL SIGQUIT

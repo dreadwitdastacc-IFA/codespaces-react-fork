@@ -1,7 +1,7 @@
 // Persmix Elite Module
 // State of the art, top of the line, elite module for advanced use
 
-import React from "react";
+import React from 'react';
 
 /**
  * Persmix: The ultimate elite module for next-gen applications.
@@ -12,8 +12,8 @@ import React from "react";
  * - State-of-the-art UI/UX
  */
 export default function Persmix({
-  title = "Persmix Elite",
-  description = "The most advanced module ever built.",
+  title = 'Persmix Elite',
+  description = 'The most advanced module ever built.',
   features = [],
 }) {
   return (

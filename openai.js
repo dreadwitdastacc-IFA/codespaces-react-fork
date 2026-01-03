@@ -4,17 +4,37 @@ import express from "express";
 import fetch from "node-fetch";
 import { exec } from "child_process";
 import { promisify } from "util";
+import { CosmosClient } from "@azure/cosmos";
 
 const execAsync = promisify(exec);
 
 const app = express();
 app.use(express.json());
 
+// Simple auth middleware
+const authenticate = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  const token = authHeader.substring(7);
+  try {
+    const decoded = Buffer.from(token, 'base64').toString().split(':');
+    if (decoded.length !== 2) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    req.userId = decoded[0];
+    next();
+  } catch (error) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+};
+
 // --- Azure AI Inference setup ---
 const AZURE_ENDPOINT = process.env.AZURE_ENDPOINT || "https://models.inference.ai.azure.com";
 const AZURE_MODEL = process.env.AZURE_MODEL || "gpt-4o"; // Supports gpt-4o, gpt-4o-mini, claude-3.5-sonnet, etc.
 const AZURE_API_KEY = process.env.AZURE_API_KEY;
-const clientAI = AZURE_API_KEY ? ModelClient(AZURE_ENDPOINT, new AzureKeyCredential(AZURE_API_KEY)) : null;
 
 // Advanced agentic capabilities configuration
 const ENABLE_FUNCTION_CALLING = process.env.ENABLE_FUNCTION_CALLING !== 'false';
@@ -29,6 +49,12 @@ const containerId = "ChatHistory";
 const transactionsContainerId = "Transactions";
 const todosContainerId = "Todos";
 const portfolioContainerId = "Portfolio";
+const usersContainerId = "Users";
+
+// --- GitHub OAuth setup ---
+const GITHUB_CLIENT_ID = process.env.GITHUB_APP_CLIENT_ID;
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_APP_CLIENT_SECRET;
+const GITHUB_REDIRECT_URI = process.env.GITHUB_APP_REDIRECT_URI || "http://localhost:3002/auth/github/callback";
 
 // Initialize database and container
 async function initCosmos() {
@@ -50,6 +76,10 @@ async function initCosmos() {
       id: portfolioContainerId,
       partitionKey: "/userId"
     });
+    await database.containers.createIfNotExists({
+      id: usersContainerId,
+      partitionKey: "/email"
+    });
     console.log("Cosmos DB initialized successfully");
   } catch (error) {
     console.error("Error initializing Cosmos DB:", error);
@@ -57,26 +87,6 @@ async function initCosmos() {
 }
 
 initCosmos();
-
-// --- Socket.IO for real-time updates ---
-io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-  });
-});
-
-// Broadcast crypto prices every 30 seconds
-setInterval(async () => {
-  try {
-    const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,litecoin,ethereum&vs_currencies=usd");
-    const data = await response.json();
-    io.emit('crypto-prices', data);
-  } catch (error) {
-    console.error('Error fetching crypto prices:', error);
-  }
-}, 30000);
 
 // --- process.report configuration ---
 // Note: process.report is read-only in Node.js, so these settings are commented out
@@ -187,11 +197,171 @@ async function executeTool(toolName, args) {
   }
 }
 
+// --- Authentication routes ---
+
+app.post("/api/auth/register", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password required" });
+    }
+
+    const { database } = await client.databases.createIfNotExists({ id: databaseId });
+    const container = database.container(usersContainerId);
+
+    // Check if user already exists
+    const { resources } = await container.items
+      .query({ query: "SELECT * FROM c WHERE c.email = @email", parameters: [{ name: "@email", value: email }] })
+      .fetchAll();
+
+    if (resources.length > 0) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
+    // Create user
+    const userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const user = {
+      id: userId,
+      email,
+      password: Buffer.from(password).toString('base64'), // Simple encoding - use proper hashing in production
+      createdAt: new Date().toISOString()
+    };
+
+    await container.items.create(user);
+    res.json({ message: "User registered successfully" });
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ error: "Registration failed" });
+  }
+});
+
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password required" });
+    }
+
+    const { database } = await client.databases.createIfNotExists({ id: databaseId });
+    const container = database.container(usersContainerId);
+
+    const { resources } = await container.items
+      .query({ query: "SELECT * FROM c WHERE c.email = @email", parameters: [{ name: "@email", value: email }] })
+      .fetchAll();
+
+    if (resources.length === 0) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const user = resources[0];
+    const storedPassword = Buffer.from(user.password, 'base64').toString();
+
+    if (storedPassword !== password) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    // Generate simple token (use JWT in production)
+    const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
+
+    res.json({ token, userId: user.id });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ error: "Login failed" });
+  }
+});
+
+// GitHub OAuth routes
+app.get("/auth/github", (req, res) => {
+  const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(GITHUB_REDIRECT_URI)}&scope=user:email`;
+  res.redirect(githubAuthUrl);
+});
+
+app.get("/auth/github/callback", async (req, res) => {
+  const { code } = req.query;
+  if (!code) {
+    return res.status(400).json({ error: "No code provided" });
+  }
+
+  try {
+    // Exchange code for access token
+    const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `client_id=${GITHUB_CLIENT_ID}&client_secret=${GITHUB_CLIENT_SECRET}&code=${code}&redirect_uri=${encodeURIComponent(GITHUB_REDIRECT_URI)}`
+    });
+
+    const tokenData = await tokenResponse.json();
+    if (tokenData.error) {
+      return res.status(400).json({ error: tokenData.error_description });
+    }
+
+    const accessToken = tokenData.access_token;
+
+    // Get user info from GitHub
+    const userResponse = await fetch("https://api.github.com/user", {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "User-Agent": "codespaces-react-app"
+      }
+    });
+
+    const githubUser = await userResponse.json();
+
+    // Get user email
+    const emailResponse = await fetch("https://api.github.com/user/emails", {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "User-Agent": "codespaces-react-app"
+      }
+    });
+
+    const emails = await emailResponse.json();
+    const primaryEmail = emails.find(email => email.primary)?.email || githubUser.email;
+
+    // Check if user exists in Cosmos DB
+    const { database } = await client.databases.createIfNotExists({ id: databaseId });
+    const container = database.container(usersContainerId);
+
+    const { resources } = await container.items
+      .query({ query: "SELECT * FROM c WHERE c.githubId = @githubId", parameters: [{ name: "@githubId", value: githubUser.id.toString() }] })
+      .fetchAll();
+
+    let user;
+    if (resources.length > 0) {
+      user = resources[0];
+    } else {
+      // Create new user
+      const userId = `github_${githubUser.id}`;
+      user = {
+        id: userId,
+        githubId: githubUser.id.toString(),
+        email: primaryEmail,
+        name: githubUser.name,
+        avatar: githubUser.avatar_url,
+        createdAt: new Date().toISOString()
+      };
+      await container.items.create(user);
+    }
+
+    // Generate token
+    const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
+
+    // Redirect to frontend with token
+    res.redirect(`http://localhost:3001?token=${token}&userId=${user.id}`);
+  } catch (error) {
+    console.error("GitHub OAuth error:", error);
+    res.status(500).json({ error: "OAuth failed" });
+  }
+});
+
 // --- Azure AI Inference integration ---
 
-app.post("/api/openai", async (req, res) => {
+app.post("/api/openai", authenticate, async (req, res) => {
   const { messages, model = AZURE_MODEL, userId = "default", enableTools = ENABLE_FUNCTION_CALLING } = req.body;
-  if (!clientAI)
+  if (!AZURE_API_KEY)
     return res.status(500).json({ error: "Missing Azure AI configuration" });
   try {
     const systemMessage = {
@@ -219,15 +389,23 @@ app.post("/api/openai", async (req, res) => {
         requestBody.tool_choice = "auto";
       }
 
-      const response = await clientAI.path("/chat/completions").post({
-        body: requestBody
+      const url = `${AZURE_ENDPOINT}/chat/completions`;
+      const headers = {
+        "Authorization": `Bearer ${AZURE_API_KEY}`,
+        "Content-Type": "application/json"
+      };
+      const response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(requestBody)
       });
 
-      if (isUnexpected(response)) {
-        throw response.body.error;
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
-      const data = response.body;
+      const data = await response.json();
       const assistantMessage = data.choices[0].message;
 
       // Check if the model wants to call a tool

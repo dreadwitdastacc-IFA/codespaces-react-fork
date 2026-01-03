@@ -11,7 +11,9 @@ const ProfitLossSummary = ({ transactions }) => {
   return (
     <div>
       <h2>Net Profit/Loss</h2>
-      <p>{net >= 0 ? 'Profit' : 'Loss'}: ${Math.abs(net)}</p>
+      <p>
+        {net >= 0 ? 'Profit' : 'Loss'}: ${Math.abs(net)}
+      </p>
     </div>
   );
 };
