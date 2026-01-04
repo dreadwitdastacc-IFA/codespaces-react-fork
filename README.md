@@ -253,6 +253,16 @@ This project is licensed under the MIT License.
 
 In the project directory, you can run:
 
+## Gemini CLI
+
+Gemini 3 Pro and Gemini 3 Flash are available via the Gemini CLI. The Codespace includes the Gemini CLI; to ensure you have the latest version, run:
+
+```bash
+npm install -g @google/gemini-cli@latest
+```
+
+After installing, use the Gemini CLI to list available models and invoke the CLI tools. This project is configured to work with Gemini 3 Pro and Gemini 3 Flash where applicable.
+
 ### `npm start`
 
 We've already run this for you in the `Codespaces: server` terminal window below. If you need to stop the server for any reason you can just run `npm start` again to bring it back online.
