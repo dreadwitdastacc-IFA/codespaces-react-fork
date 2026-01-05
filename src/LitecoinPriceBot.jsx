@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const API_URL =
+  'https://api.coingecko.com/api/v3/simple/price?ids=litecoin&vs_currencies=usd';
 // Allow API URL override via environment variable for proxy/firewall workarounds
 const API_URL = import.meta.env.VITE_COINGECKO_API_URL || 'https://api.coingecko.com/api/v3/simple/price?ids=litecoin&vs_currencies=usd';
 
@@ -13,6 +15,9 @@ const LitecoinPriceBot = () => {
   const [usedFallback, setUsedFallback] = useState(false);
 
   useEffect(() => {
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
@@ -46,6 +51,28 @@ const LitecoinPriceBot = () => {
   if (price === null || price === undefined) return <div>No price data available.</div>;
 
   return (
+    <div
+      style={{
+        margin: '1rem 0',
+        padding: '1rem',
+        border: '1px solid #b0b0b0',
+        borderRadius: '8px',
+        background: '#f8f8f8',
+      }}
+    >
+      <h2>Litecoin Price Bot</h2>
+      <p>
+        1 Litecoin (LTC) ={' '}
+        <strong>
+          $
+          {price.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}{' '}
+          USD
+        </strong>
+      </p>
+      <small>Powered by CoinGecko</small>
     <div style={{ margin: '1rem 0', padding: '1rem', border: '1px solid #b0b0b0', borderRadius: '8px', background: usedFallback ? '#fff3cd' : '#f8f8f8' }}>
       <h2>Litecoin Price Bot</h2>
       <p>1 Litecoin (LTC) = <strong>${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</strong></p>

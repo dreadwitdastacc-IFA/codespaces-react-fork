@@ -15,15 +15,23 @@ describe('EliteTerminal', () => {
 
   it('renders correctly with header and input', () => {
     render(<EliteTerminal onCommand={mockOnCommand} />);
-    expect(screen.getByText('Elite Terminal - Auto-Complete Enabled')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)')).toBeInTheDocument();
+    expect(
+      screen.getByText('Elite Terminal - Auto-Complete Enabled')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(
+        'Type a command... (Tab for suggestions, ↑/↓ for history)'
+      )
+    ).toBeInTheDocument();
     expect(screen.queryByRole('list')).not.toBeInTheDocument(); // No suggestions initially
   });
 
   it('updates input and shows suggestions on typing', async () => {
     const user = userEvent.setup();
     render(<EliteTerminal onCommand={mockOnCommand} />);
-    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    const input = screen.getByPlaceholderText(
+      'Type a command... (Tab for suggestions, ↑/↓ for history)'
+    );
     await user.type(input, 'ls');
     expect(input).toHaveValue('ls');
     expect(screen.getByText('ls')).toBeInTheDocument(); // Suggestion appears
@@ -32,7 +40,9 @@ describe('EliteTerminal', () => {
   it('executes command on Enter and updates history', async () => {
     const user = userEvent.setup();
     render(<EliteTerminal onCommand={mockOnCommand} />);
-    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    const input = screen.getByPlaceholderText(
+      'Type a command... (Tab for suggestions, ↑/↓ for history)'
+    );
     await user.type(input, 'pwd{enter}');
     expect(mockOnCommand).toHaveBeenCalledWith('pwd');
     expect(screen.getByText('$ pwd')).toBeInTheDocument(); // History shows command
@@ -42,7 +52,9 @@ describe('EliteTerminal', () => {
   it('navigates history with Arrow Up', async () => {
     const user = userEvent.setup();
     render(<EliteTerminal onCommand={mockOnCommand} />);
-    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    const input = screen.getByPlaceholderText(
+      'Type a command... (Tab for suggestions, ↑/↓ for history)'
+    );
     await user.type(input, 'ls{enter}');
     await user.type(input, 'cd{enter}');
     await user.keyboard('{ArrowUp}');
@@ -54,7 +66,9 @@ describe('EliteTerminal', () => {
   it('navigates history with Arrow Down and clears at end', async () => {
     const user = userEvent.setup();
     render(<EliteTerminal onCommand={mockOnCommand} />);
-    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    const input = screen.getByPlaceholderText(
+      'Type a command... (Tab for suggestions, ↑/↓ for history)'
+    );
     await user.type(input, 'ls{enter}');
     await user.keyboard('{ArrowUp}');
     expect(input).toHaveValue('ls');
@@ -65,7 +79,9 @@ describe('EliteTerminal', () => {
   it('cycles suggestions with Tab', async () => {
     const user = userEvent.setup();
     render(<EliteTerminal onCommand={mockOnCommand} />);
-    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    const input = screen.getByPlaceholderText(
+      'Type a command... (Tab for suggestions, ↑/↓ for history)'
+    );
     await user.type(input, 'l');
     await user.keyboard('{Tab}');
     expect(input).toHaveValue('ls'); // First suggestion
@@ -76,7 +92,9 @@ describe('EliteTerminal', () => {
   it('clears suggestions on Escape', async () => {
     const user = userEvent.setup();
     render(<EliteTerminal onCommand={mockOnCommand} />);
-    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    const input = screen.getByPlaceholderText(
+      'Type a command... (Tab for suggestions, ↑/↓ for history)'
+    );
     await user.type(input, 'l');
     expect(screen.getByText('ls')).toBeInTheDocument();
     await user.keyboard('{Escape}');
@@ -86,7 +104,9 @@ describe('EliteTerminal', () => {
   it('selects suggestion on click', async () => {
     const user = userEvent.setup();
     render(<EliteTerminal onCommand={mockOnCommand} />);
-    const input = screen.getByPlaceholderText('Type a command... (Tab for suggestions, ↑/↓ for history)');
+    const input = screen.getByPlaceholderText(
+      'Type a command... (Tab for suggestions, ↑/↓ for history)'
+    );
     await user.type(input, 'l');
     const suggestion = screen.getByText('ls');
     await user.click(suggestion);

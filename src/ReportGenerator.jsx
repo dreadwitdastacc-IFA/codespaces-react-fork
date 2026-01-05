@@ -1,8 +1,12 @@
 import React from 'react';
 
 function generateReport(transactions) {
-  const income = transactions.filter(t => t.type === 'income').reduce((a, t) => a + t.amount, 0);
-  const expense = transactions.filter(t => t.type === 'expense').reduce((a, t) => a + t.amount, 0);
+  const income = transactions
+    .filter((t) => t.type === 'income')
+    .reduce((a, t) => a + t.amount, 0);
+  const expense = transactions
+    .filter((t) => t.type === 'expense')
+    .reduce((a, t) => a + t.amount, 0);
   return {
     totalIncome: income,
     totalExpense: expense,

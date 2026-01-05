@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 export default function SystemStatus() {
   const [status, setStatus] = useState(null);
@@ -12,7 +12,7 @@ export default function SystemStatus() {
 
   const fetchStatus = async () => {
     try {
-      const response = await fetch("/api/status");
+      const response = await fetch('/api/status');
       const data = await response.json();
       setStatus(data);
     } catch (err) {
@@ -27,25 +27,38 @@ export default function SystemStatus() {
   return (
     <div
       style={{
-        background: "#f0f0f0",
-        padding: "1rem",
-        borderRadius: "8px",
-        margin: "1rem 0",
-        fontFamily: "monospace",
-        fontSize: "0.9rem",
+        background: '#f0f0f0',
+        padding: '1rem',
+        borderRadius: '8px',
+        margin: '1rem 0',
+        fontFamily: 'monospace',
+        fontSize: '0.9rem',
       }}
     >
       <h3>System Status - Self-Aware Elite Mode</h3>
       {status.error ? (
-        <div style={{ color: "red" }}>Error: {status.error}</div>
+        <div style={{ color: 'red' }}>Error: {status.error}</div>
       ) : (
         <div>
-          <p><strong>Status:</strong> {status.status}</p>
-          <p><strong>Uptime:</strong> {Math.floor(status.uptime)} seconds</p>
-          <p><strong>Memory Usage:</strong> {Math.round(status.memory.heapUsed / 1024 / 1024)} MB</p>
-          <p><strong>Node Version:</strong> {status.version}</p>
-          <p><strong>Platform:</strong> {status.platform}</p>
-          <p><strong>Features:</strong> {status.features.join(", ")}</p>
+          <p>
+            <strong>Status:</strong> {status.status}
+          </p>
+          <p>
+            <strong>Uptime:</strong> {Math.floor(status.uptime)} seconds
+          </p>
+          <p>
+            <strong>Memory Usage:</strong>{' '}
+            {Math.round(status.memory.heapUsed / 1024 / 1024)} MB
+          </p>
+          <p>
+            <strong>Node Version:</strong> {status.version}
+          </p>
+          <p>
+            <strong>Platform:</strong> {status.platform}
+          </p>
+          <p>
+            <strong>Features:</strong> {status.features.join(', ')}
+          </p>
         </div>
       )}
     </div>

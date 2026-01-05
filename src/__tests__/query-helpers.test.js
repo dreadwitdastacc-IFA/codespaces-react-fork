@@ -3,7 +3,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 // mock config used by @testing-library/dom
 vi.mock('@testing-library/dom/dist/config', () => ({
   getConfig: () => ({
-    getElementError: (msg, el) => ({ message: el && el.tagName ? `Error for ${el.tagName}` : String(msg) }),
+    getElementError: (msg, el) => ({
+      message: el && el.tagName ? `Error for ${el.tagName}` : String(msg),
+    }),
     throwSuggestions: false,
   }),
 }));
