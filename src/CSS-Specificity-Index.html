@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Specificity & Cascade - Complete Guide</gogetumminmine>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #071133 100%);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #4ade80 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .intro-text {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #4ade80;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 300ms ease;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(74, 222, 128, 0.5);
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .resource-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: #4ade80;
+        }
+
+        .resource-card p {
+            color: #bbb;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .resource-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 200ms ease;
+        }
+
+        .resource-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(74, 222, 128, 0.3);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .feature-item {
+            padding: 25px;
+            background: rgba(100, 150, 255, 0.1);
+            border-left: 3px solid #6496ff;
+            border-radius: 8px;
+        }
+
+        .feature-item h4 {
+            color: #60a5fa;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .feature-item p {
+            color: #aaa;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .specificity-formula {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            margin: 60px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+        }
+
+        .specificity-formula strong {
+            color: #fbbf24;
+        }
+
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .example-table th {
+            background: rgba(74, 222, 128, 0.2);
+            padding: 15px;
+            text-align: left;
+            color: #4ade80;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(74, 222, 128, 0.5);
+        }
+
+        .example-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .example-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .example-table code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #fbbf24;
+        }
+
+        .spec-badge {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .tips-section {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 60px 0;
+        }
+
+        .tips-section h2 {
+            color: #22c55e;
+            margin-bottom: 20px;
+        }
+
+        .tips-section ul {
+            margin-left: 25px;
+            line-height: 1.9;
+        }
+
+        .tips-section li {
+            margin-bottom: 12px;
+        }
+
+        .tips-section strong {
+            color: #fff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 CSS Specificity & Cascade</h1>
+            <p class="tagline">Master the complete guide to CSS selector specificity and the cascade</p>
+        </header>
+
+        <div class="intro-text">
+            <p>
+                CSS specificity determines which styles are applied when multiple selectors target the same element.
+                Understanding specificity and the CSS cascade is essential for writing maintainable stylesheets.
+                This guide provides comprehensive examples, interactive demos, and practical demonstrations of how
+                CSS specificity and cascade work.
+            </p>
+        </div>
+
+        <h2 style="font-size: 2rem; margin-bottom: 40px; text-align: center;">📚 Learning Resources</h2>
+
+        <div class="resources-grid">
+            <div class="resource-card">
+                <h3>📊 Interactive Specificity Demo</h3>
+                <p>See how different selector types affect specificity with live, interactive examples showing element,
+                    class, ID, and complex selectors in action.</p>
+                <a href="CSS-Specificity-Demo.html" class="resource-link">Open Demo →</a>
+            </div>
+
+            <div class="resource-card">
+                <h3>🎯 Complex Selectors</h3>
+                <p>Deep dive into compound selectors combining IDs, classes, attributes, and pseudo-classes with
+                    real-world examples and live previews.</p>
+                <a href="Complex-Selectors-Demo.html" class="resource-link">Open Demo →</a>
+            </div>
+
+            <div class="resource-card">
+                <h3>🔄 Cascade & Equal Specificity</h3>
+                <p>Understand how the cascade order determines winners when specificity is equal, plus @layer,
+                    !important, and best practices.</p>
+                <a href="CSS-Cascade-Demo.html" class="resource-link">Open Demo →</a>
+            </div>
+
+            <div class="resource-card">
+                <h3>🎬 VideoCard Visual Effects</h3>
+                <p>Interactive preview of the VideoCard component with gradient backgrounds, shadow depth, lift
+                    animations, and smooth transitions.</p>
+                <a href="VideoCard-Preview.html" class="resource-link">Open Demo →</a>
+            </div>
+
+            <div class="resource-card">
+                <h3>📖 CSS Reference Guide</h3>
+                <p>Complete reference file with all specificity examples documented with their calculations and
+                    explanations.</p>
+                <a href="VideoCard.css" class="resource-link"
+                    style="background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);">View CSS →</a>
+            </div>
+
+            <div class="resource-card">
+                <h3>🪟 Window Interface IDL</h3>
+                <p>Web IDL specification for the Window interface including all properties, methods, and event handlers
+                    in standard format.</p>
+                <a href="Window.idl" class="resource-link"
+                    style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">View IDL →</a>
+            </div>
+
+            <div class="resource-card">
+                <h3>🏠 Back to Start</h3>
+                <p>Return to this main guide and index page for quick access to all resources and reference information.
+                </p>
+                <a href="CSS-Specificity-Index.html" class="resource-link"
+                    style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);">This Page</a>
+            </div>
+        </div>
+
+        <h2 style="font-size: 2rem; margin-bottom: 40px; text-align: center;">📐 Specificity Formula</h2>
+
+        <div class="specificity-formula">
+            <strong>Specificity = (IDs, Classes/Attributes/Pseudo-classes, Elements)</strong><br><br>
+            <strong>Example 1:</strong> #myId input.myClass → <strong>1-1-1</strong><br>
+            <strong>Example 2:</strong> input[type="password"]:required → <strong>0-2-1</strong><br>
+            <strong>Example 3:</strong> html body main input → <strong>0-0-4</strong><br><br>
+            <em>Specificity is compared left-to-right: One ID beats any number of classes or elements!</em>
+        </div>
+
+        <h2 style="font-size: 1.8rem; margin-bottom: 30px;">✨ Key Features</h2>
+
+        <div class="features">
+            <div class="feature-item">
+                <h4>🎯 Specificity Calculation</h4>
+                <p>Learn how IDs, classes, attributes, pseudo-classes, and elements contribute to selector specificity
+                    weights.</p>
+            </div>
+
+            <div class="feature-item">
+                <h4>🔄 Cascade Order</h4>
+                <p>Understand how source order determines winners when multiple selectors have equal specificity.</p>
+            </div>
+
+            <div class="feature-item">
+                <h4>⚙️ Functional Pseudo-classes</h4>
+                <p>Master :is(), :where(), :not(), :has() and their unique specificity behaviors with real examples.</p>
+            </div>
+
+            <div class="feature-item">
+                <h4>@layer Management</h4>
+                <p>Organize styles into layers for better cascade control and maintainability without !important.</p>
+            </div>
+
+            <div class="feature-item">
+                <h4>💥 !important Override</h4>
+                <p>Learn when and why !important is needed, and better alternatives for managing style conflicts.</p>
+            </div>
+
+            <div class="feature-item">
+                <h4>🎨 Practical Examples</h4>
+                <p>Interactive demos showing real-world scenarios and how specificity affects styling outcomes.</p>
+            </div>
+        </div>
+
+        <h2 style="font-size: 1.8rem; margin-bottom: 30px;">📊 Specificity Reference Table</h2>
+
+        <table class="example-table">
+            <thead>
+                <tr>
+                    <th>Selector Type</th>
+                    <th>Specificity</th>
+                    <th>Example</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Element</td>
+                    <td><span class="spec-badge">0-0-1</span></td>
+                    <td><code>h1</code></td>
+                    <td>Basic element selector</td>
+                </tr>
+                <tr>
+                    <td>Class / Attribute / Pseudo-class</td>
+                    <td><span class="spec-badge">0-1-0</span></td>
+                    <td><code>.class</code>, <code>[attr]</code>, <code>:hover</code></td>
+                    <td>All count the same in class column</td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td><span class="spec-badge">1-0-0</span></td>
+                    <td><code>#myId</code></td>
+                    <td>Single ID beats any combination of classes</td>
+                </tr>
+                <tr>
+                    <td>Multiple Elements</td>
+                    <td><span class="spec-badge">0-0-4</span></td>
+                    <td><code>html body main input</code></td>
+                    <td>Still loses to 1 class (0-1-0)</td>
+                </tr>
+                <tr>
+                    <td>Compound Selector</td>
+                    <td><span class="spec-badge">1-1-1</span></td>
+                    <td><code>#myId input.class</code></td>
+                    <td>Sum of all components</td>
+                </tr>
+                <tr>
+                    <td>:is() Pseudo-class</td>
+                    <td><span class="spec-badge">Variable</span></td>
+                    <td><code>:is(#id, .class)</code></td>
+                    <td>Takes highest argument specificity</td>
+                </tr>
+                <tr>
+                    <td>:where() Pseudo-class</td>
+                    <td><span class="spec-badge">0-0-0</span></td>
+                    <td><code>:where(#id)</code></td>
+                    <td>Always zero specificity!</td>
+                </tr>
+                <tr>
+                    <td>:not() Pseudo-class</td>
+                    <td><span class="spec-badge">Variable</span></td>
+                    <td><code>:not(#id)</code></td>
+                    <td>Arguments add to specificity</td>
+                </tr>
+                <tr>
+                    <td>Inline Style</td>
+                    <td><span class="spec-badge">Highest</span></td>
+                    <td><code>style="color: red"</code></td>
+                    <td>Beats all selectors (except !important)</td>
+                </tr>
+                <tr>
+                    <td>!important</td>
+                    <td><span class="spec-badge">ULTIMATE</span></td>
+                    <td><code>color: red !important;</code></td>
+                    <td>Trumps everything (use sparingly!)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="tips-section">
+            <h2>💡 Best Practices & Tips</h2>
+            <ul>
+                <li><strong>Keep specificity low:</strong> Use classes instead of IDs in stylesheets. Reserve IDs for
+                    JavaScript targeting.</li>
+                <li><strong>Avoid !important:</strong> Use @layer and cascade order instead. It makes code harder to
+                    maintain.</li>
+                <li><strong>Use @layer for organization:</strong> Reset → Base → Theme → Components → Utilities</li>
+                <li><strong>Understand the cascade:</strong> When specificity is equal, the last rule in source wins.
+                </li>
+                <li><strong>:where() for base styles:</strong> Use it for low-specificity resets and defaults that are
+                    easy to override.</li>
+                <li><strong>:is() for component selectors:</strong> Use it when you need the highest specificity from
+                    multiple options.</li>
+                <li><strong>Test in DevTools:</strong> Use browser DevTools to inspect which rules apply and their
+                    specificity.</li>
+                <li><strong>Document cascade layers:</strong> Add comments explaining your @layer strategy in complex
+                    projects.</li>
+            </ul>
+        </div>
+
+        <h2 style="font-size: 1.8rem; margin-bottom: 30px;">🎓 Learning Path</h2>
+
+        <ol style="margin-left: 30px; line-height: 2; font-size: 1.05rem;">
+            <li>Start with <strong>CSS-Specificity-Demo.html</strong> to understand basic specificity calculation</li>
+            <li>Explore <strong>Complex-Selectors-Demo.html</strong> to see how multiple selectors combine</li>
+            <li>Study <strong>CSS-Cascade-Demo.html</strong> to understand cascade order and @layer</li>
+            <li>Reference <strong>VideoCard.css</strong> for comprehensive examples with all rules documented</li>
+            <li>Practice writing selectors with the lowest specificity needed for your requirements</li>
+            <li>Review browser DevTools to verify which rules are actually applied</li>
+        </ol>
+
+        <footer>
+            <p style="color: #666; margin-bottom: 20px;">CSS Specificity & Cascade Comprehensive Guide</p>
+            <p>Created with ❤️ for better CSS understanding</p>
+        </footer>
+    </div>
+</body>
+
+</html>

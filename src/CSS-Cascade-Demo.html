@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Cascade & Equal Specificity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #071133 100%);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+        }
+
+        .demo-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .demo-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-box h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #4ade80;
+        }
+
+        .selector-list {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #4ade80;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .selector-item {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .selector-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .selector-item.winner {
+            border-left-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .selector-name {
+            color: #fbbf24;
+            word-break: break-all;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .specificity-badge {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .selector-item.winner .specificity-badge {
+            background: #22c55e;
+        }
+
+        .source-order {
+            display: inline-block;
+            background: #8b5cf6;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+
+        .explanation {
+            background: rgba(100, 150, 255, 0.1);
+            border-left: 3px solid #6496ff;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .cascade-rule {
+            background: rgba(249, 115, 22, 0.1);
+            border-left: 3px solid #f97316;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .preview {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .preview h1,
+        .preview h2,
+        .preview p {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .preview h1:last-child,
+        .preview h2:last-child,
+        .preview p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Example 1: Equal Specificity - Cascade Wins */
+        h1.example1-first {
+            color: #ef4444;
+        }
+
+        h1.example1-second {
+            color: #10b981;
+        }
+
+        /* Example 2: Source Order */
+        body h1.example2 {
+            color: #3b82f6;
+        }
+
+        html h1.example2 {
+            color: #f59e0b;
+        }
+
+        /* Example 3: :where() vs :is() */
+        :where(#test) h2.example3 {
+            color: #8b5cf6;
+        }
+
+        :is(#test) h2.example3 {
+            color: #ec4899;
+        }
+
+        /* Example 4: @layer cascade */
+        @layer base, theme;
+
+        @layer base {
+            p.example4 {
+                color: #6366f1;
+            }
+        }
+
+        @layer theme {
+            p.example4 {
+                color: #06b6d4;
+            }
+        }
+
+        /* Example 5: !important overrides */
+        p.example5-normal {
+            color: #94a3b8;
+        }
+
+        p.example5-important {
+            color: #22c55e !important;
+        }
+
+        .color-indicator {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .note {
+            padding: 12px;
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 3px solid #3b82f6;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .demo-section {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📚 CSS Cascade & Equal Specificity</h1>
+        <p class="subtitle">When Specificity is Equal, the Cascade Decides</p>
+
+        <!-- Example 1: Two Selectors with Same Specificity -->
+        <div class="demo-section">
+            <div class="demo-box">
+                <h2>Example 1: Same Specificity (0-0-1)</h2>
+                <div class="selector-list">
+                    <div class="selector-item">
+                        <span class="selector-name">h1</span>
+                        <span class="specificity-badge">0-0-1</span>
+                        <span class="source-order">1st</span>
+                    </div>
+                    <div class="selector-item winner">
+                        <span class="selector-name">h1</span>
+                        <span class="specificity-badge">0-0-1</span>
+                        <span class="source-order">2nd ✓ WINS</span>
+                    </div>
+                </div>
+                <div class="explanation">
+                    <strong>Specificity is identical:</strong> Both are 0-0-1<br><br>
+                    <strong>Resolver:</strong> Source order (cascade) determines the winner<br><br>
+                    <strong>Result:</strong> The rule appearing <em>later</em> in the stylesheet wins
+                </div>
+            </div>
+            <div class="demo-box">
+                <h2>Live Preview</h2>
+                <div class="preview">
+                    <h1 class="example1-first">Would be red (0-0-1)</h1>
+                    <h1 class="example1-second">But this is green (0-0-1) - WINS via cascade</h1>
+                </div>
+                <div class="note">
+                    ✓ Green wins because it appears later in the CSS source
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 2: Body vs HTML (Both 0-0-2) -->
+        <div class="demo-section">
+            <div class="demo-box">
+                <h2>Example 2: Element Chain Specificity</h2>
+                <div class="selector-list">
+                    <div class="selector-item">
+                        <span class="selector-name">body h1</span>
+                        <span class="specificity-badge">0-0-2</span>
+                        <span class="source-order">1st</span>
+                    </div>
+                    <div class="selector-item winner">
+                        <span class="selector-name">html h1</span>
+                        <span class="specificity-badge">0-0-2</span>
+                        <span class="source-order">2nd ✓ WINS</span>
+                    </div>
+                </div>
+                <div class="explanation">
+                    <strong>Both have:</strong> 2 element selectors = 0-0-2<br><br>
+                    <strong>Specificity is a complete tie</strong><br><br>
+                    <strong>Winner:</strong> The rule defined later in the source code<br><br>
+                    <strong>Depth doesn't matter:</strong> body → h1 is same specificity as html → h1
+                </div>
+            </div>
+            <div class="demo-box">
+                <h2>Live Preview</h2>
+                <div class="preview">
+                    <h1 class="example2">I'm orange because html h1 comes later (0-0-2)</h1>
+                </div>
+                <div class="note">
+                    ✓ html h1 (later) beats body h1 (earlier) due to cascade
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 3: :where() vs :is() -->
+        <div class="demo-section">
+            <div class="demo-box">
+                <h2>Example 3: :where() vs :is()</h2>
+                <div class="selector-list">
+                    <div class="selector-item">
+                        <span class="selector-name">:where(#test) h2</span>
+                        <span class="specificity-badge">0-0-1</span>
+                        <span class="source-order">1st</span>
+                    </div>
+                    <div class="selector-item winner">
+                        <span class="selector-name">:is(#test) h2</span>
+                        <span class="specificity-badge">1-0-1</span>
+                        <span class="source-order">2nd ✓ WINS</span>
+                    </div>
+                </div>
+                <div class="explanation">
+                    <strong>Key Differences:</strong><br>
+                    • :where() = zero specificity (0-0-1)<br>
+                    • :is() = takes highest argument (1-0-0) + element (1-0-1)<br><br>
+                    <strong>Winner:</strong> :is() always wins due to higher specificity regardless of order
+                </div>
+            </div>
+            <div class="demo-box">
+                <h2>Live Preview</h2>
+                <div class="preview">
+                    <h2 class="example3">I'm pink because :is(#test) wins (1-0-1 > 0-0-1)</h2>
+                </div>
+                <div class="note">
+                    ✓ Specificity determines winner (not cascade order here)
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 4: CSS Cascade Layers -->
+        <div class="demo-section">
+            <div class="demo-box">
+                <h2>Example 4: @layer Cascade</h2>
+                <div class="selector-list">
+                    <div class="selector-item">
+                        <span class="selector-name">@layer base</span>
+                        <span class="specificity-badge">0-0-1</span>
+                        <span class="source-order">Declared 1st</span>
+                    </div>
+                    <div class="selector-item winner">
+                        <span class="selector-name">@layer theme</span>
+                        <span class="specificity-badge">0-0-1</span>
+                        <span class="source-order">Declared 2nd ✓</span>
+                    </div>
+                </div>
+                <div class="explanation">
+                    <strong>@layer declaration order:</strong><br>
+                    @layer base, theme; (declares order)<br><br>
+                    <strong>Rules:</strong> Later layers override earlier ones, regardless of source order within the
+                    layer<br><br>
+                    <strong>Winner:</strong> theme layer wins even if defined before base
+                </div>
+            </div>
+            <div class="demo-box">
+                <h2>Live Preview</h2>
+                <div class="preview">
+                    <p class="example4">I'm cyan (theme layer wins) even though base was defined first</p>
+                </div>
+                <div class="note">
+                    ✓ Layer order (theme after base) determines winner, not source order
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 5: !important Override -->
+        <div class="demo-section">
+            <div class="demo-box">
+                <h2>Example 5: !important Declaration</h2>
+                <div class="selector-list">
+                    <div class="selector-item">
+                        <span class="selector-name">p.example5-normal</span>
+                        <span class="specificity-badge">0-1-1</span>
+                        <span style="color: #f87171;">Normal</span>
+                    </div>
+                    <div class="selector-item winner">
+                        <span class="selector-name">p.example5-important</span>
+                        <span class="specificity-badge">0-1-1</span>
+                        <span style="color: #22c55e;">!important ✓ WINS</span>
+                    </div>
+                </div>
+                <div class="cascade-rule">
+                    <strong>⚠️ Important Rule:</strong> !important creates a separate cascade tier<br>
+                    It trumps all normal declarations regardless of specificity<br>
+                    <strong>Use sparingly!</strong> It breaks normal cascade
+                </div>
+            </div>
+            <div class="demo-box">
+                <h2>Live Preview</h2>
+                <div class="preview">
+                    <p class="example5-important">I'm green because !important overrides everything</p>
+                </div>
+                <div class="note">
+                    ⚠️ !important should be avoided - use @layer to manage cascade instead
+                </div>
+            </div>
+        </div>
+
+        <!-- Cascade Layer Declaration Order -->
+        <div class="demo-box" style="margin-top: 60px;">
+            <h2>🔄 CSS Cascade Order (Highest to Lowest Priority)</h2>
+            <ol style="margin-left: 20px; margin-top: 20px; line-height: 2;">
+                <li><strong>Transition declarations</strong> (animations)</li>
+                <li><strong>User-origin !important</strong> (user styles with !important)</li>
+                <li><strong>Author-origin !important</strong> (stylesheet !important)</li>
+                <li><strong style="color: #22c55e;">Later @layers</strong> ← Most important layer concept!</li>
+                <li><strong style="color: #3b82f6;">Earlier @layers</strong></li>
+                <li><strong>Inline styles</strong> (style="...")</li>
+                <li><strong>ID selectors</strong> (1-0-0)</li>
+                <li><strong>Class/Attribute/Pseudo-class</strong> (0-1-0)</li>
+                <li><strong>Element selectors</strong> (0-0-1)</li>
+                <li><strong>Inherited values</strong></li>
+                <li><strong>Browser defaults</strong></li>
+            </ol>
+        </div>
+
+        <!-- Key Principles -->
+        <div class="demo-box"
+            style="margin-top: 40px; background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e;">
+            <h2 style="color: #22c55e;">✨ Key Cascade Principles</h2>
+            <ul style="margin-left: 20px; margin-top: 15px; line-height: 1.8;">
+                <li><strong>Specificity is compared left-to-right:</strong> One ID beats any number of classes</li>
+                <li><strong>Source order matters only when specificity is equal</strong></li>
+                <li><strong>Later rules win when specificity and layer are equal</strong></li>
+                <li><strong>@layer declaration order determines cascade</strong> - not physical position in file</li>
+                <li><strong>!important reverses cascade order</strong> (avoid when possible)</li>
+                <li><strong>Inline styles beat selectors</strong> but lose to !important</li>
+                <li><strong>Inherited values have lowest priority</strong> (can always override)</li>
+                <li><strong>Use @layer instead of !important</strong> for better maintainability</li>
+            </ul>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="demo-box"
+            style="margin-top: 40px; background: rgba(100, 150, 255, 0.1); border-left: 3px solid #6496ff;">
+            <h2 style="color: #6496ff;">💡 Best Practices</h2>
+            <ul style="margin-left: 20px; margin-top: 15px; line-height: 1.8;">
+                <li><strong>Prefer lower specificity:</strong> Makes styles easier to override</li>
+                <li><strong>Avoid ID selectors in stylesheets:</strong> Reserve them for JavaScript</li>
+                <li><strong>Use @layer for organization:</strong> Reset/Base → Theme → Components → Utilities</li>
+                <li><strong>Keep cascade in mind:</strong> The last rule can override earlier ones</li>
+                <li><strong>Document your cascade layers:</strong> Makes team collaboration easier</li>
+                <li><strong>Test cascade behavior:</strong> Different media queries or feature flags</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

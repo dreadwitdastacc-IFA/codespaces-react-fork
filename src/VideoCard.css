@@ -27,6 +27,333 @@
   flex: 1 1 auto;
 }
 
-/* find process using port 3000 */
+/* CSS Specificity Examples */
 
-/* stop that process (example) */
+/* 0-1-0 */
+[type="password"] {
+  /* attribute selector */
+}
+
+/* 0-1-1 */
+input:focus {
+  /* pseudo-class + element */
+}
+
+/* 1-2-1 */
+:root #myApp input:required {
+  /* ID + pseudo-classes + element */
+}
+
+/* 1-0-0 - WINS!! */
+#myElement {
+  color: green;
+  /* ID selector beats everything */
+}
+
+/* 0-4-0 */
+.bodyClass .sectionClass .parentClass [id="myElement"] {
+  color: yellow;
+  /* 4 classes/attributes loses to 1 ID */
+}
+
+/* 1-0-0 */
+#myElement {
+  color: yellow;
+  /* single ID selector */
+}
+
+/* 1-1-0 - WINS!! */
+#myApp [id="myElement"] {
+  color: green;
+  /* ID + attribute selector beats single ID */
+}
+
+/* 0-1-1 - WINS because CLASS column is greater */
+:root input {
+  color: green;
+  /* pseudo-class + element beats 4 elements */
+}
+
+/* 0-0-4 */
+html body main input {
+  color: yellow;
+  /* 4 element selectors lose to 1 pseudo-class */
+}
+
+/* Specificity with :is(), :has(), :nth-last-of-type() */
+
+/* 0-0-1 */
+p {
+  /* single element */
+}
+
+/* 0-0-1 */
+:is(p) {
+  /* :is() doesn't add to specificity */
+}
+
+/* 0-1-1 */
+h2:nth-last-of-type(n + 2) {
+  /* pseudo-class + element */
+}
+
+/* 0-0-2 */
+h2:has(~ h2) {
+  /* :has() pseudo-class with complex selector */
+}
+
+/* 0-1-2 */
+div.outer p {
+  /* class + 2 elements */
+}
+
+/* 0-1-2 */
+div:not(.inner) p {
+  /* :not() class + 2 elements */
+}
+
+/* Specificity with IDs in functional pseudo-classes */
+
+/* 1-0-0 */
+:is(p, #fakeId) {
+  /* :is() takes highest ID from arguments */
+}
+
+/* 1-0-1 */
+h1:has(+ h2, > #fakeId) {
+  /* :has() takes highest ID from arguments + element */
+}
+
+/* 1-0-1 */
+p:not(#fakeId) {
+  /* :not() with ID argument + element */
+}
+
+/* 1-0-2 */
+div:not(.inner, #fakeId) p {
+  /* :not() with ID argument + 2 elements */
+}
+
+/* Specificity with nested selectors (SCSS/CSS Nesting) */
+
+/* 1-0-1 */
+p,
+#fakeId {
+  /* span inherits highest ID specificity from parent */
+}
+
+p span {
+  /* 0-0-2 */
+}
+
+#fakeId span {
+  /* 1-0-1 - WINS */
+}
+
+/* Multiple IDs stacking in :not() */
+
+/* 3-0-1 */
+a:not(#fakeId#fakeId#fakeID) {
+  color: blue;
+  /* multiple ID selectors add to specificity */
+}
+
+/* Inline Styles - HIGHEST SPECIFICITY */
+
+/* Inline styles beat ALL CSS selectors (except !important) */
+/* <p style="color: purple">…</p> */
+/* Inline style specificity: 1-0-0-0 (inline styles column) */
+
+/* To override inline style, must use !important */
+p {
+  color: red !important;
+  /* !important is last resort, beats inline styles */
+}
+
+/* Attribute selector with !important - can override inline styles */
+
+/* 0-1-1 with !important */
+p[style*="purple"] {
+  color: rebeccapurple !important;
+  /* attribute selector + !important beats inline style="color: purple" */
+}
+
+/* :where() - ZERO SPECIFICITY */
+
+/* 0-0-1 */
+:where(#defaultTheme) a {
+  /* :where() ignores specificity of arguments */
+  color: red;
+  /* even with ID inside, contributes 0-0-0 */
+}
+
+/* Simple element selector chain */
+
+/* 0-0-2 */
+footer a {
+  color: blue;
+  /* 2 element selectors */
+}
+
+/* @scope CSS rule - Scoped styles */
+
+/* 0-1-1 */
+@scope (.article-body) {
+
+  /* :scope img has specificity of 0-1-0 + 0-0-1 = 0-1-1 */
+  :scope img {
+    /* :scope is a pseudo-class (0-1-0) + element (0-0-1) */
+  }
+}
+
+/* Comparing ID vs Attribute vs :where() selectors */
+/* HTML: <main id="myContent"><h1>Text</h1></main> */
+
+/* 1-0-1 - WINS */
+#myContent h1 {
+  color: green;
+  /* ID selector + element */
+}
+
+/* 0-1-1 */
+[id="myContent"] h1 {
+  color: yellow;
+  /* attribute selector + element loses to ID */
+}
+
+/* 0-0-1 */
+:where(#myContent) h1 {
+  color: blue;
+  /* :where() has 0 specificity, only element h1 counts */
+}
+
+/* Multiple repeated selectors - Stacking specificity */
+
+/* 3-0-1 */
+#myId#myId#myId span {
+  /* 3 repeated ID selectors + element */
+  /* each ID selector contributes to the ID column */
+}
+
+/* 0-3-1 */
+.myClass.myClass.myClass span {
+  /* 3 repeated class selectors + element */
+  /* each class selector contributes to the class column */
+}
+
+/* Functional pseudo-classes with repeated ID selectors */
+
+/* 3-0-1 */
+:not(#fakeID#fakeId#fakeID) span {
+  /* :not() with 3 repeated IDs + element */
+  /* IDs inside :not() add to specificity */
+}
+
+/* 3-0-0 */
+:is(#fakeID#fakeId#fakeID, span) {
+  /* :is() takes highest specificity from arguments */
+  /* 3 repeated IDs = 3-0-0, ignores the element option */
+}
+
+/* CSS Cascade Layers - @layer */
+/* Layers control cascade order independent of specificity */
+
+/* Declare named layer for organizing styles */
+@layer importantOverrides;
+
+/* Import external stylesheet into anonymous layer */
+@import "TW.css" layer();
+
+/* Override important rules from layers */
+@import "importantOverrides.css" layer();
+
+/* Base styles that can be overridden by higher layers */
+p,
+p * {
+  font-size: 1rem;
+  /* specificity: 0-0-1 and 0-0-2 */
+  /* but layer order determines which wins */
+}
+
+/* Same specificity, different layers */
+
+/* 0-1-1 - outer layer */
+[id="myElement"] p {
+  /* normal styles here */
+  color: blue;
+}
+
+/* 0-1-1 - importantOverrides layer WINS */
+@layer importantOverrides {
+  [id="myElement"] p {
+    /* important style here */
+    color: green;
+    /* same specificity (0-1-1), but later layer wins */
+  }
+}
+
+/* Cascade - Source Order matters when specificity is equal */
+
+/* 0-0-2 */
+body h1 {
+  color: green;
+}
+
+/* 0-0-2 - WINS because it comes later */
+html h1 {
+  color: purple;
+  /* same specificity, but later in source wins via cascade */
+}
+
+/* HTML Structure Example */
+/* 
+<html lang="en">
+  <body id="parent">
+    <h1>Here is a title!</h1>
+  </body>
+</html>
+*/
+
+/* Selector specificity for above structure: */
+
+/* 0-0-1 */
+h1 {
+  color: red;
+}
+
+/* 0-0-2 */
+body h1 {
+  color: blue;
+}
+
+/* 1-0-1 */
+#parent h1 {
+  color: green;
+  /* WINS - ID in selector beats other options */
+}
+
+/* 0-1-1 */
+[id="parent"] h1 {
+  color: yellow;
+  /* attribute selector - loses to ID */
+}
+
+/* Complex selectors - Multiple combos */
+
+/* 1-1-1 */
+#myElement input.myClass {
+  color: red;
+  /* ID + class + element */
+}
+
+/* 0-2-1 */
+input[type="password"]:required {
+  color: blue;
+  /* attribute selector + pseudo-class + element */
+}
+
+/* 0-0-4 */
+html body main input {
+  color: green;
+  /* 4 element selectors */
+}

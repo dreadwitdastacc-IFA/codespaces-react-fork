@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Specificity Interactive Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #071133 100%);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .demo-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .demo-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-box h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #4ade80;
+        }
+
+        .selector-list {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #4ade80;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .selector {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .selector:last-child {
+            margin-bottom: 0;
+        }
+
+        .specificity {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .selector-name {
+            color: #fbbf24;
+            word-break: break-all;
+        }
+
+        .winner {
+            background: rgba(34, 197, 94, 0.2);
+            border-left-color: #22c55e;
+        }
+
+        .winner .specificity {
+            background: #22c55e;
+        }
+
+        .preview {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .preview h1 {
+            text-align: left;
+            margin: 0;
+            padding: 20px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 300ms ease;
+        }
+
+        .preview [id="parent"] {
+            display: block;
+        }
+
+        .color-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .rule-explanation {
+            background: rgba(100, 150, 255, 0.1);
+            border-left: 3px solid #6496ff;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .cascade-warning {
+            background: rgba(249, 115, 22, 0.1);
+            border-left: 3px solid #f97316;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .demo-section {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Specificity Demo Styles */
+
+        /* Example 1: Basic element selector */
+        .demo1 .target-h1 {
+            color: red;
+        }
+
+        /* Example 2: Element + Class */
+        .demo2 .target-h1 {
+            color: blue;
+        }
+
+        .demo2 h1.has-class {
+            color: blue;
+        }
+
+        /* Example 3: ID selector WINS */
+        .demo3 #parent-title {
+            color: green;
+        }
+
+        /* Example 4: Attribute selector */
+        .demo4 [id="parent-title"] {
+            color: yellow;
+        }
+
+        /* Example 5: Multiple selectors cascade */
+        .demo5 h1 {
+            color: orange;
+        }
+
+        .demo5 body h1 {
+            color: purple;
+        }
+
+        /* Example 6: :where() has zero specificity */
+        .demo6 :where(#cannot-override) h1 {
+            color: cyan;
+        }
+
+        .demo6 h1.demo6-style {
+            color: cyan;
+        }
+
+        /* Example 7: Complex selector - ID + Class + Element */
+        .demo7 #myElement input.myClass {
+            color: #ff1493;
+        }
+
+        /* Example 8: Attribute + Pseudo-class + Element */
+        .demo8 input[type="password"]:required {
+            color: #00ffff;
+        }
+
+        /* Example 9: Multiple elements */
+        .demo9 html body main input {
+            color: #fbbf24;
+        }
+
+        </head><body><div class="container"><h1>🎨 CSS Specificity Interactive Demo</h1><p class="subtitle">Understanding CSS Specificity with Real Examples</p>< !-- Example 1: Basic Element Selector --><div class="demo-section"><div class="demo-box demo1"><h2>Example 1: Element Selector</h2><div class="selector-list"><div class="selector"><span class="selector-name">h1</span><span class="specificity">0-0-1</span></div></div><div class="rule-explanation"><strong>Rule:</strong>Targets any &lt;
+        h1&gt;
+        element<br><strong>Specificity:</strong>One element selector=0-0-1 </div></div><div class="demo-box"><h2>Preview</h2><div class="preview demo1"><h1>Here is a title !</h1></div><div style="margin-top: 15px; color: #aaa; font-size: 0.9rem;"><span class="color-indicator" style="background-color: red;"></span>Color: <code>red</code></div></div></div>< !-- Example 2: Element+Class --><div class="demo-section"><div class="demo-box demo2"><h2>Example 2: Element+Class</h2><div class="selector-list"><div class="selector"><span class="selector-name">h1.has-class</span><span class="specificity">0-1-1</span></div></div><div class="rule-explanation"><strong>Rule:</strong>Targets &lt;
+        h1&gt;
+        with class "has-class" <br><strong>Specificity:</strong>1 class+1 element=0-1-1<br><strong>Result:</strong><strong>BEATS Example 1</strong>(0-0-1 < 0-1-1) </div></div><div class="demo-box"><h2>Preview</h2><div class="preview demo2"><h1 class="has-class">Here is a title !</h1></div><div style="margin-top: 15px; color: #aaa; font-size: 0.9rem;"><span class="color-indicator" style="background-color: blue;"></span>Color: <code>blue</code></div></div></div>< !-- Example 3: ID Selector --><div class="demo-section"><div class="demo-box demo3"><h2>Example 3: ID Selector - Winner !</h2><div class="selector-list"><div class="selector winner"><span class="selector-name">#parent-title</span><span class="specificity">1-0-0</span></div></div><div class="rule-explanation"><strong>Rule:</strong>Targets element with id="parent-title" <br><strong>Specificity:</strong>1 ID=1-0-0<br><strong>Result:</strong><strong>BEATS ALL PREVIOUS</strong>(1-0-0 is highest so far) </div></div><div class="demo-box"><h2>Preview</h2><div class="preview demo3"><h1 id="parent-title">Here is a title !</h1></div><div style="margin-top: 15px; color: #aaa; font-size: 0.9rem;"><span class="color-indicator" style="background-color: green;"></span>Color: <code>green</code></div></div></div>< !-- Example 4: Attribute Selector --><div class="demo-section"><div class="demo-box demo4"><h2>Example 4: Attribute Selector</h2><div class="selector-list"><div class="selector"><span class="selector-name">[id="parent-title"]</span><span class="specificity">0-1-0</span></div></div><div class="rule-explanation"><strong>Rule:</strong>Targets element with attribute id="parent-title" <br><strong>Specificity:</strong>1 attribute selector=0-1-0<br><strong>Result:</strong><strong>LOSES to Example 3</strong>(0-1-0 < 1-0-0) </div></div><div class="demo-box"><h2>Preview</h2><div class="preview demo4"><h1 id="parent-title">Here is a title !</h1></div><div style="margin-top: 15px; color: #aaa; font-size: 0.9rem;">Note: Example 3's green still wins (not shown as yellow)
+ </div></div></div>< !-- Example 5: Cascade (Source Order) --><div class="demo-section"><div class="demo-box demo5"><h2>Example 5: Cascade - Source Order</h2><div class="selector-list"><div class="selector"><span class="selector-name">h1</span><span class="specificity">0-0-1</span></div><div class="selector winner"><span class="selector-name">body h1</span><span class="specificity">0-0-2</span></div></div><div class="rule-explanation"><strong>Rule:</strong>When specificity is different,
+        higher wins<br><strong>Result:</strong><code>body h1</code>(0-0-2) <strong>BEATS</strong><code>h1</code>(0-0-1) </div><div class="cascade-warning"><strong>Cascade Principle:</strong>If specificity were equal,
+        the one appearing <em>later</em>in the source would win ! </div></div><div class="demo-box"><h2>Preview</h2><div class="preview demo5"><body><h1>Here is a title !</h1></body></div><div style="margin-top: 15px; color: #aaa; font-size: 0.9rem;"><span class="color-indicator" style="background-color: purple;"></span>Color: <code>purple</code></div></div></div>< !-- Example 6: :where() Zero Specificity --><div class="demo-section"><div class="demo-box demo6"><h2>Example 6: :where() - Zero Specificity !</h2><div class="selector-list"><div class="selector"><span class="selector-name">:where(#cannot-override) h1</span><span class="specificity">0-0-1</span></div><div class="selector winner"><span class="selector-name">h1.demo6-style</span><span class="specificity">0-1-1</span></div></div><div class="rule-explanation"><strong>Rule:</strong> :where() always has 0 specificity,
+        ignores arguments<br><strong>Specificity:</strong>0-0-0 (from :where)+0-0-1 (element)=0-0-1<br><strong>Result:</strong><code>h1.demo6-style</code>(0-1-1) <strong>BEATS :where()</strong></div></div><div class="demo-box"><h2>Preview</h2><div class="preview demo6"><h1 class="demo6-style">Here is a title !</h1></div><div style="margin-top: 15px; color: #aaa; font-size: 0.9rem;"><span class="color-indicator" style="background-color: cyan;"></span>Color: <code>cyan</code></div></div></div>< !-- Specificity Chart --><div class="demo-box" style="margin-top: 60px;"><h2>📊 Specificity Hierarchy</h2><table style="width: 100%; border-collapse: collapse; margin-top: 20px;"><thead><tr style="border-bottom: 2px solid rgba(255, 255, 255, 0.2);"><th style="text-align: left; padding: 12px; color: #4ade80;">Selector Type</th><th style="text-align: center; padding: 12px; color: #4ade80;">Specificity</th><th style="text-align: left; padding: 12px; color: #4ade80;">Example</th></tr></thead><tbody><tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><td style="padding: 12px;">Element Selector</td><td style="text-align: center; padding: 12px;"><code>0-0-1</code></td><td style="padding: 12px;"><code>h1</code></td></tr><tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><td style="padding: 12px;">Class Selector</td><td style="text-align: center; padding: 12px;"><code>0-1-0</code></td><td style="padding: 12px;"><code>.class-name</code></td></tr><tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><td style="padding: 12px;">ID Selector</td><td style="text-align: center; padding: 12px;"><code>1-0-0</code></td><td style="padding: 12px;"><code>#id-name</code></td></tr><tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"><td style="padding: 12px;">Inline Style</td><td style="text-align: center; padding: 12px;"><code>Higher</code></td><td style="padding: 12px;"><code>style="color: red;" </code></td></tr><tr><td style="padding: 12px;"><code> !important</code></td><td style="text-align: center; padding: 12px;"><code>HIGHEST</code></td><td style="padding: 12px;"><code>color: red !important;
+        </code></td></tr></tbody></table></div></div></body></html>
